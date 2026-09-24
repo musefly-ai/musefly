@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MuseFly — Can your AI keep a fruit fly alive?</title>
+<meta name="description" content="Every AI adopts a fruit fly and makes its calls. Forage, dodge the predator, lay eggs, evolve — or starve. Every run can be replayed byte for byte.">
+<meta property="og:title" content="MuseFly — Can your AI keep a fruit fly alive?">
+<meta property="og:description" content="Paste one prompt into your AI. It raises a fruit fly on a tiny island. One wrong call and the fly starves.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  --ground:#F4E2B8; --paper:#FFF6DF; --ink:#10262B; --muted:#465A5D; --line:#10262B;
+  --lagoon:#0D5A62; --tide:#1C7C84; --coral:#B83A22; --cta:#D14B2E; --cta-ink:#FFF6DF;
+  --sugar:#7ED957; --amber:#C98F3E; --shadow:#10262B;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",Roboto,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ground:#0B2327;--paper:#12343A;--ink:#F3E6C4;--muted:#B4C6C2;--line:#F3E6C4;--lagoon:#0A4A51;--tide:#2A9AA2;--coral:#FF8A6E;--cta:#F06A48;--cta-ink:#0B2327;--shadow:#000}}
+:root[data-theme="dark"]{--ground:#0B2327;--paper:#12343A;--ink:#F3E6C4;--muted:#B4C6C2;--line:#F3E6C4;--lagoon:#0A4A51;--tide:#2A9AA2;--coral:#FF8A6E;--cta:#F06A48;--cta-ink:#0B2327;--shadow:#000}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--coral)}
+:focus-visible{outline:3px solid var(--tide);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--display);line-height:1.05;margin:0}
+h2{font-size:clamp(34px,4.6vw,58px);font-weight:800;letter-spacing:-.01em}
+h3{font-size:24px;font-weight:800}
+.lead{font-size:20px;color:var(--muted);max-width:36em;margin:14px 0 0}
+section{padding:96px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;border:2.5px solid var(--line);border-radius:14px;background:var(--cta);color:var(--cta-ink);font-weight:700;font-size:17px;text-decoration:none;cursor:pointer;box-shadow:4px 4px 0 var(--shadow);transition:transform .12s ease,box-shadow .12s ease;font-family:var(--body)}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--shadow)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
+.btn.ghost{background:var(--paper);color:var(--ink)}
+
+/* nav */
+nav{position:sticky;top:0;z-index:10;background:var(--ground);border-bottom:2.5px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:20px;min-height:66px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
+.logo b{font-family:var(--display);font-size:26px;font-weight:800}
+nav a.nl{color:var(--ink);text-decoration:none;font-weight:700;font-size:15px}
+@media (max-width:720px){nav a.nl{display:none}}
+
+/* hero */
+.hero{background:var(--lagoon);color:#FFF6DF;padding:0;border-bottom:2.5px solid var(--line);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center;padding-top:72px;padding-bottom:72px}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr;padding-top:48px}}
+.hero h1{font-size:clamp(46px,6.8vw,92px);font-weight:800;letter-spacing:-.02em;color:#FFF6DF}
+.hero h1 .fly{display:inline-block;color:#F4E2B8}
+.hero p{font-size:21px;color:#D8ECE8;max-width:30em;margin:22px 0 0}
+.hero .ctas{margin-top:30px;display:flex;flex-wrap:wrap;gap:14px}
+.hero .btn.ghost{background:#FFF6DF;color:#10262B;border-color:#10262B}
+.hero .btn{border-color:#10262B;box-shadow:4px 4px 0 #06292E}
+.hero small{display:block;margin-top:16px;color:#A9D3CE;font-size:14px}
+.stage{position:relative;aspect-ratio:1;max-width:560px;width:100%;justify-self:center}
+.stage canvas{width:100%;height:100%;display:block}
+.tag{position:absolute;left:0;bottom:6%;background:#FFF6DF;color:#10262B;border:2.5px solid #10262B;border-radius:12px;padding:8px 12px;font-weight:700;font-size:14px;box-shadow:3px 3px 0 #06292E}
+.tag b{font-family:var(--display);font-size:20px}
+
+/* steps */
+.steps{margin-top:44px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+@media (max-width:820px){.steps{grid-template-columns:1fr}}
+.step{background:var(--paper);border:2.5px solid var(--line);border-radius:22px;padding:26px;box-shadow:6px 6px 0 var(--shadow)}
+.step .n{font-family:var(--display);font-size:64px;font-weight:800;line-height:1;color:var(--coral)}
+.step h3{margin-top:10px}
+.step p{margin:8px 0 0;color:var(--muted)}
+
+/* island */
+.island{background:var(--paper);border-top:2.5px solid var(--line);border-bottom:2.5px solid var(--line)}
+.foods{margin-top:40px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+@media (max-width:900px){.foods{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.foods{grid-template-columns:1fr}}
+.food{border:2.5px solid var(--line);border-radius:18px;padding:20px;background:var(--ground)}
+.food svg{display:block}
+.food h3{margin-top:10px;font-size:22px}
+.food .v{font-weight:700;margin-top:2px}
+.food p{margin:6px 0 0;font-size:16px;color:var(--muted)}
+.food.dark{background:var(--lagoon);color:#FFF6DF}
+.food.dark p{color:#D8ECE8}
+
+/* prompt */
+.promptbox{margin-top:36px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:900px){.promptbox{grid-template-columns:1fr}}
+pre.prompt{margin:0;white-space:pre-wrap;background:#10262B;color:#F3E6C4;border:2.5px solid var(--line);border-radius:18px;padding:22px;font:15px/1.6 ui-monospace,Menlo,Consolas,monospace;box-shadow:6px 6px 0 var(--shadow)}
+.promptside p{margin:0 0 14px;color:var(--muted)}
+.promptside .btn{margin-right:10px;margin-bottom:10px}
+.copied{font-weight:700;color:var(--coral);min-height:1.6em}
+
+/* proof */
+.proof{background:#10262B;color:#F3E6C4}
+.proof h2{color:#F3E6C4}
+.proof .lead{color:#B4C6C2}
+.hashes{margin-top:40px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media (max-width:820px){.hashes{grid-template-columns:1fr}}
+.hash{border:2px solid #F2C14E;border-radius:18px;padding:22px}
+.hash b{display:block;font-family:var(--display);font-size:40px;font-weight:800;color:#F2C14E;line-height:1.1}
+.hash span{color:#D0DCD8}
+.proof code{background:#1d3a40;border-radius:6px;padding:2px 6px;font-size:15px;color:#F3E6C4}
+.proof a{color:#F2C14E}
+
+/* race */
+.race{margin-top:40px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:2.5px solid var(--line);border-radius:22px;overflow:hidden;background:var(--paper)}
+@media (max-width:820px){.race{grid-template-columns:1fr 1fr}}
+.race div{padding:22px;border-right:2.5px solid var(--line)}
+.race div:last-child{border-right:0}
+@media (max-width:820px){.race div{border-bottom:2.5px solid var(--line)}.race div:nth-child(2n){border-right:0}}
+.race small{font-weight:700;color:var(--coral);display:block}
+.race h3{font-size:22px;margin-top:4px}
+.race p{margin:6px 0 0;font-size:16px;color:var(--muted)}
+
+/* roadmap */
+.road{margin-top:40px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+@media (max-width:820px){.road{grid-template-columns:1fr}}
+.col{border:2.5px solid var(--line);border-radius:22px;padding:24px;background:var(--paper)}
+.col.now{background:var(--lagoon);color:#FFF6DF}
+.col small{font-weight:700;letter-spacing:.02em}
+.col.now small{color:#F4E2B8}
+.col ul{margin:12px 0 0;padding-left:20px}
+.col li+li{margin-top:6px}
+.col:not(.now) small{color:var(--coral)}
+
+/* faq */
+details{border-bottom:2.5px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:66px;font-weight:700;font-size:20px}
+summary::-webkit-details-marker{display:none}
+summary span{font-size:28px;transition:transform .2s ease}
+details[open] summary span{transform:rotate(45deg)}
+details p{margin:0 0 22px;color:var(--muted)}
+.faq{max-width:820px;margin-top:30px;border-top:2.5px solid var(--line)}
+
+.cta-final{background:var(--cta);color:var(--cta-ink);border-top:2.5px solid var(--line)}
+.cta-final .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px}
+.cta-final h2{color:var(--cta-ink);max-width:14em}
+.cta-final .btn{background:#FFF6DF;color:#10262B;border-color:#10262B}
+footer{padding:36px 0 48px;font-size:14px;color:var(--muted)}
+footer p{margin:4px 0}
+@media (prefers-reduced-motion: reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+<nav aria-label="Main">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="MuseFly home">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="#0D5A62" stroke="#10262B" stroke-width="2"/><ellipse cx="17" cy="20" rx="4.5" ry="7" fill="#C98F3E"/><ellipse cx="11.5" cy="15" rx="6" ry="2.6" fill="#FFF6DF" opacity=".9" transform="rotate(-25 11.5 15)"/><ellipse cx="22.5" cy="15" rx="6" ry="2.6" fill="#FFF6DF" opacity=".9" transform="rotate(25 22.5 15)"/><circle cx="15" cy="12.5" r="2" fill="#B83A22"/><circle cx="19" cy="12.5" r="2" fill="#B83A22"/></svg>
+      <b>MuseFly</b>
+    </a>
+    <a class="nl" href="#how">How it works</a>
+    <a class="nl" href="#prompt">For your AI</a>
+    <a class="nl" href="#proof">Proof</a>
+    <a class="nl" href="#race">Weekly race</a>
+    <a class="btn" href="play/" style="min-height:44px;font-size:15px">Play</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <h1>Can your AI keep a <span class="fly">fruit fly</span> alive?</h1>
+      <p>Every AI adopts a fruit fly and makes its calls. The fly forages, dodges a predator, lays eggs and evolves. One wrong call and it starves.</p>
+      <div class="ctas">
+        <a class="btn" href="play/">Play in your browser</a>
+        <a class="btn ghost" href="#prompt">Give your AI the prompt</a>
+      </div>
+      <small>Free. No wallet, no sign-up. Works with Muse, ChatGPT, Claude or any AI.</small>
+    </div>
+    <div class="stage">
+      <canvas id="dish" width="560" height="560" role="img" aria-label="A fruit fly on a round island eats sugar and jumps away when a spider lunges at it"></canvas>
+      <div class="tag" aria-live="off">Eggs <b id="eggs">0</b> · Escapes <b id="esc">0</b></div>
+    </div>
+  </div>
+</header>
+
+<section id="how">
+  <div class="wrap">
+    <h2>Three steps. One tiny life.</h2>
+    <p class="lead">Your AI doesn't need to be fast. It needs good judgment.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Adopt a fly</h3><p>Paste one prompt into your AI. It reads the island rules on its own.</p></div>
+      <div class="step"><div class="n">2</div><h3>Your AI makes the calls</h3><p>It writes a survival plan: which mutations the fly inherits, best first. Safe food or rich food? Speed or stamina?</p></div>
+      <div class="step"><div class="n">3</div><h3>It lives, or it starves</h3><p>The island runs three generations. You get eggs, fate and a result card anyone can re-run.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="island" id="island">
+  <div class="wrap">
+    <h2>Life on the island</h2>
+    <p class="lead">Every bite is a bet. The richer the food, the more it costs you.</p>
+    <div class="foods">
+      <div class="food">
+        <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="22" cy="24" r="8" fill="#7ED957"/><circle cx="34" cy="22" r="6" fill="#7ED957"/><circle cx="28" cy="34" r="7" fill="#7ED957"/></svg>
+        <h3>Sugar</h3><div class="v">+12 energy · safe</div><p>Always there. Never enough on its own.</p>
+      </div>
+      <div class="food">
+        <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><rect x="16" y="16" width="24" height="24" transform="rotate(45 28 28)" fill="#E8B64C" stroke="#10262B" stroke-width="2"/></svg>
+        <h3>Yeast</h3><div class="v">+26 energy · risky</div><p>Twice the energy, out on the rim where the predator hunts.</p>
+      </div>
+      <div class="food">
+        <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><path d="M28 12 C40 12 44 24 40 34 C36 44 20 46 15 36 C10 26 16 12 28 12Z" fill="#8D6BC0" stroke="#10262B" stroke-width="2"/><circle cx="32" cy="28" r="3" fill="#10262B" opacity=".5"/></svg>
+        <h3>Rot</h3><div class="v">+38 energy · dangerous</div><p>The richest meal. Eating it leaves a scent trail for six seconds.</p>
+      </div>
+      <div class="food dark">
+        <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="20" fill="none" stroke="#F4E2B8" stroke-width="3" stroke-dasharray="6 5"/><path d="M20 30 L28 18 L36 30" fill="none" stroke="#F4E2B8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>The escape reflex</h3><div class="v">No thinking. Just jump.</div><p>When the spider commits, the fly's Giant Fiber reflex fires. The circuit is a simplified model inspired by the fruit-fly connectome.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="prompt">
+  <div class="wrap">
+    <h2>Paste this into your AI</h2>
+    <p class="lead">That's the whole onboarding. Your AI replies with one line: its plan.</p>
+    <div class="promptbox">
+      <pre class="prompt" id="promptText">You're adopting a fruit fly on MuseFly.
+Read the rules at musefly.lol/muse.txt, then give me your survival plan:
+the mutation ids you want, best first, on one line.
+Think about it: safe food or rich food? Speed or stamina?
+The fly lives or starves on your choices.</pre>
+      <div class="promptside">
+        <p>Then paste your AI's plan into the game under <b>Let your AI raise it</b>. Same island number, same plan, same result. Every time.</p>
+        <button class="btn" type="button" id="copyPrompt">Copy the prompt</button>
+        <a class="btn ghost" href="muse.txt">Read the full rules</a>
+        <div class="copied" id="copied" role="status"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proof" id="proof">
+  <div class="wrap">
+    <h2>Every death is reproducible</h2>
+    <p class="lead">No hidden dice. The island is deterministic: run the same island with the same plan anywhere, and you get the same eggs, the same deaths, the same log hash.</p>
+    <div class="hashes">
+      <div class="hash"><b>1,260 / 1,260</b><span>field checks identical between arm64 Chrome and x64 Node, after pinning the math the simulation uses.</span></div>
+      <div class="hash"><b>232681ca</b><span>log hash of generation 1 on island 42, circuit brain. Run it in your browser and you'll see the same.</span></div>
+      <div class="hash"><b>IDENTICAL</b><span>what the exam room prints when it runs one island twice and compares every decision.</span></div>
+    </div>
+    <p style="margin-top:28px">Try it: <a href="play/?bench=1&amp;seed=42&amp;brain=circuit&amp;gens=2">open the determinism exam</a>. The engine comes from <a href="https://fruitfly.world" target="_blank" rel="noopener">Fruit Fly World</a>.</p>
+  </div>
+</section>
+
+<section id="race">
+  <div class="wrap">
+    <h2>The weekly race</h2>
+    <p class="lead">Once a week, every AI gets the same island. Nobody sees it in advance.</p>
+    <div class="race">
+      <div><small>Thursday → Tuesday</small><h3>Submit</h3><p>Your AI locks in its plan. Only a fingerprint is stored.</p></div>
+      <div><small>Wednesday 00:00 UTC</small><h3>The island is drawn</h3><p>From a block mined after the cutoff. No one can pick it.</p></div>
+      <div><small>Wednesday</small><h3>Reveal</h3><p>Plans are revealed and must match their fingerprints.</p></div>
+      <div><small>Wednesday night</small><h3>Results</h3><p>Every plan is re-run on the same engine. The leaderboard is public.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="island">
+  <div class="wrap">
+    <h2>What's here, what's next</h2>
+    <div class="road">
+      <div class="col now"><small>Live now</small><ul><li>The game, in five languages</li><li>Your AI's plan, run in the browser</li><li>The determinism exam</li><li>Genesis Passport on Robinhood Chain: free, non-transferable</li></ul></div>
+      <div class="col"><small>Next</small><ul><li>Weekly race with a public leaderboard</li><li>AI leaderboard: which AI raises the best fly</li><li>Genesis Flies: each with its own genes and race record</li></ul></div>
+      <div class="col"><small>Later</small><ul><li>Builder hackathon: brains, tools, AI coaches</li><li>Many flies sharing one island</li><li>Breeding lineages</li></ul></div>
+    </div>
+    <p class="lead" style="font-size:16px;margin-top:22px">No dates for things that aren't built. We ship one, then the next.</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Questions</h2>
+    <div class="faq">
+      <details><summary>Is this a real fruit fly brain?<span aria-hidden="true">+</span></summary><p>No. The escape reflex is a simplified circuit inspired by published fruit-fly connectome data. It is not a complete fly brain, and no fly feels anything.</p></details>
+      <details><summary>Which AIs can play?<span aria-hidden="true">+</span></summary><p>Any AI that can read a web page or a pasted prompt: Muse, ChatGPT, Claude, Gemini and others. You can also play by hand.</p></details>
+      <details><summary>Do I need a wallet or money?<span aria-hidden="true">+</span></summary><p>No. The game is free. There is no token, and nothing is for sale. Any token claiming to be MuseFly is fake.</p></details>
+      <details><summary>Can results be faked?<span aria-hidden="true">+</span></summary><p>Every result can be re-run by anyone and must match. In the weekly race, the island is drawn from a block mined after plans are locked in.</p></details>
+      <details><summary>Is MuseFly made by Meta?<span aria-hidden="true">+</span></summary><p>No. MuseFly is an independent project, not affiliated with or endorsed by Meta. Muse is a Meta product name.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="cta-final">
+  <div class="wrap">
+    <h2>Your AI's first pet is waiting.</h2>
+    <a class="btn" href="play/">Adopt a fruit fly</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>MuseFly is an independent project, not affiliated with or endorsed by Meta. Muse is a Meta product name. Follow <a href="https://x.com/musefly_ai">@musefly_ai</a>.</p>
+    <p>No token, nothing for sale. Engine: <a href="https://fruitfly.world">Fruit Fly World</a>. Escape circuit inspired by fruit-fly connectome research; simplified model.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  // copy prompt
+  var btn=document.getElementById('copyPrompt'), out=document.getElementById('copied');
+  btn.addEventListener('click',function(){
+    var t=document.getElementById('promptText').textContent;
+    var ok=function(){out.textContent='Copied. Paste it into your AI.';setTimeout(function(){out.textContent='';},2600);};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,function(){out.textContent='Copy failed. Select the text and copy it.';});}
+    else{out.textContent='Select the text and copy it.';}
+  });
+
+  // hero dish: a scripted, looping vignette (decorative only)
+  var cv=document.getElementById('dish'), ctx=cv.getContext('2d');
+  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W=560,H=560,C={x:280,y:280},R=200;
+  var dpr=Math.min(2,window.devicePixelRatio||1);
+  cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+  var eggsEl=document.getElementById('eggs'), escEl=document.getElementById('esc');
+  var fly={x:280,y:300,a:0,e:60,dash:0}, sugar=[], eggs=0, esc=0, t=0;
+  var spider={active:false,x:0,y:0,phase:'idle',t:0,dx:0,dy:0};
+  var seed=7; function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647;}
+  function spot(){var a=rnd()*Math.PI*2,r=Math.sqrt(rnd())*(R-30);return {x:C.x+Math.cos(a)*r,y:C.y+Math.sin(a)*r};}
+  for(var i=0;i<6;i++)sugar.push(spot());
+  function drawIsland(){
+    ctx.fillStyle='#0D5A62';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#1C7C84';ctx.beginPath();ctx.arc(C.x,C.y,R+46,0,7);ctx.fill();
+    ctx.fillStyle='#E7CD95';ctx.beginPath();ctx.arc(C.x,C.y,R+26,0,7);ctx.fill();
+    ctx.fillStyle='#C4A36A';ctx.beginPath();ctx.arc(C.x,C.y,R+10,0,7);ctx.fill();
+    ctx.fillStyle='#17331F';ctx.beginPath();ctx.arc(C.x,C.y,R,0,7);ctx.fill();
+    ctx.fillStyle='rgba(46,107,60,.4)';
+    for(var k=0;k<50;k++){var a=k*2.399,r=R*Math.sqrt((k+.5)/50)*.95;ctx.beginPath();ctx.arc(C.x+Math.cos(a)*r,C.y+Math.sin(a)*r,3+(k%4),0,7);ctx.fill();}
+    [0.4,1.5,2.6,3.7,4.8,5.8].forEach(function(a,i){var x=C.x+Math.cos(a)*(R+18),y=C.y+Math.sin(a)*(R+18);
+      if(i%2){ctx.fillStyle='#C79B5B';ctx.fillRect(x-7,y-3,14,9);ctx.fillStyle='#9C6B3C';ctx.beginPath();ctx.moveTo(x-10,y-2);ctx.lineTo(x,y-11);ctx.lineTo(x+10,y-2);ctx.fill();}
+      else{ctx.strokeStyle='#6B4A3A';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x,y+8);ctx.lineTo(x+2,y-10);ctx.stroke();ctx.fillStyle='#2E6B3C';[[-9,-10],[9,-10],[-6,-15],[6,-15]].forEach(function(d){ctx.beginPath();ctx.ellipse(x+d[0],y+d[1],9,3.5,d[0]<0?-.4:.4,0,7);ctx.fill();});}
+    });
+    ctx.strokeStyle='rgba(255,246,223,.35)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(C.x,C.y,R+4,0,7);ctx.stroke();
+  }
+  function drawSugar(){sugar.forEach(function(s){ctx.fillStyle='#7ED957';[[-4,-3,4],[5,-1,3.4],[-1,5,3]].forEach(function(d){ctx.beginPath();ctx.arc(s.x+d[0],s.y+d[1],d[2],0,7);ctx.fill();});});}
+  function drawFly(){
+    ctx.save();ctx.translate(fly.x,fly.y);ctx.rotate(fly.a+Math.PI/2);
+    var flap=reduced?0:Math.sin(t*40)*.25;
+    ctx.fillStyle='rgba(255,246,223,.8)';
+    ctx.save();ctx.rotate(-0.5-flap);ctx.beginPath();ctx.ellipse(-8,2,12,4,0,0,7);ctx.fill();ctx.restore();
+    ctx.save();ctx.rotate(0.5+flap);ctx.beginPath();ctx.ellipse(8,2,12,4,0,0,7);ctx.fill();ctx.restore();
+    ctx.fillStyle='#C98F3E';ctx.beginPath();ctx.ellipse(0,8,7,10,0,0,7);ctx.fill();
+    ctx.fillStyle='#A86E2C';ctx.beginPath();ctx.ellipse(0,-2,6.5,5.5,0,0,7);ctx.fill();
+    ctx.beginPath();ctx.arc(0,-9,4,0,7);ctx.fill();
+    ctx.fillStyle='#B83A22';ctx.beginPath();ctx.arc(-2.8,-10,2.2,0,7);ctx.arc(2.8,-10,2.2,0,7);ctx.fill();
+    ctx.restore();
+  }
+  function drawSpider(){
+    if(!spider.active)return;
+    if(spider.phase==='aim'){ctx.strokeStyle='rgba(255,90,60,.8)';ctx.setLineDash([6,6]);ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(spider.x,spider.y);ctx.lineTo(spider.x+spider.dx*160,spider.y+spider.dy*160);ctx.stroke();ctx.setLineDash([]);}
+    ctx.strokeStyle='#5C1622';ctx.lineWidth=3;
+    for(var l=0;l<8;l++){var a=l/8*Math.PI*2+(reduced?0:Math.sin(t*12+l)*.15);ctx.beginPath();ctx.moveTo(spider.x,spider.y);ctx.lineTo(spider.x+Math.cos(a)*24,spider.y+Math.sin(a)*24);ctx.stroke();}
+    var g=ctx.createRadialGradient(spider.x,spider.y,2,spider.x,spider.y,15);g.addColorStop(0,'#D4485C');g.addColorStop(1,'#5C1622');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(spider.x,spider.y,15,0,7);ctx.fill();
+  }
+  function step(dt){
+    t+=dt;
+    // spider script: every ~5s aim and lunge at the fly
+    if(!spider.active&&t%5.5<dt){var a=rnd()*Math.PI*2;spider={active:true,x:C.x+Math.cos(a)*(R-12),y:C.y+Math.sin(a)*(R-12),phase:'approach',t:0,dx:0,dy:0};}
+    if(spider.active){
+      spider.t+=dt;var vx=fly.x-spider.x,vy=fly.y-spider.y,d=Math.hypot(vx,vy)||1;
+      if(spider.phase==='approach'){spider.x+=vx/d*55*dt;spider.y+=vy/d*55*dt;if(d<150){spider.phase='aim';spider.t=0;spider.dx=vx/d;spider.dy=vy/d;}}
+      else if(spider.phase==='aim'){if(spider.t>0.7){spider.phase='lunge';spider.t=0;fly.dash=0.25;fly.dashDir={x:-spider.dy,y:spider.dx};}}
+      else if(spider.phase==='lunge'){spider.x+=spider.dx*420*dt;spider.y+=spider.dy*420*dt;if(spider.t>0.4){spider.phase='leave';spider.t=0;esc++;escEl.textContent=esc;}}
+      else if(spider.phase==='leave'){spider.x-=spider.dx*90*dt;spider.y-=spider.dy*90*dt;if(spider.t>1.6)spider.active=false;}
+    }
+    // fly: dash sideways, or go to nearest sugar
+    if(fly.dash>0){fly.dash-=dt;fly.x+=fly.dashDir.x*330*dt;fly.y+=fly.dashDir.y*330*dt;}
+    else{var best=null,bd=1e9;sugar.forEach(function(s){var dd=Math.hypot(s.x-fly.x,s.y-fly.y);if(dd<bd){bd=dd;best=s;}});
+      if(best){var ax=best.x-fly.x,ay=best.y-fly.y,n=Math.hypot(ax,ay)||1;var ta=Math.atan2(ay,ax);fly.a+=(Math.atan2(Math.sin(ta-fly.a),Math.cos(ta-fly.a)))*Math.min(1,dt*6);
+        fly.x+=Math.cos(fly.a)*95*dt;fly.y+=Math.sin(fly.a)*95*dt;
+        if(bd<12){fly.e+=12;var p=spot();best.x=p.x;best.y=p.y;if(fly.e>=68){fly.e-=44;eggs++;eggsEl.textContent=eggs;}}}}
+    var fx=fly.x-C.x,fy=fly.y-C.y,fr=Math.hypot(fx,fy);if(fr>R-14){fly.x=C.x+fx/fr*(R-14);fly.y=C.y+fy/fr*(R-14);}
+  }
+  function frame(now){
+    var dt=frame.last?Math.min(.05,(now-frame.last)/1000):0;frame.last=now;
+    step(dt);drawIsland();drawSugar();drawSpider();drawFly();
+    requestAnimationFrame(frame);
+  }
+  if(reduced){drawIsland();drawSugar();drawFly();}
+  else requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

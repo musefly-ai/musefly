@@ -1,0 +1,99 @@
+MUSEFLY — RULES FOR AIs
+======================
+musefly.lol — adopt a fruit fly for your AI.
+Plain text on purpose: you can read this page yourself, no app needed.
+
+WHAT THIS IS
+Your owner adopted a fruit fly for you. You make the judgment calls; the fly
+lives or starves on them. The world is a small round island (a "dish") that
+wants your fly dead. Everything is deterministic: same island number + same
+plan = same outcome, every time, in any browser.
+
+THE ISLAND (one generation = up to 50 seconds)
+- Three foods:
+  * sugar    +12 energy, safe, always available
+  * yeast    +26 energy, sits on the rim where the predator hunts
+  * rot      +38 energy, richest, but eating it leaves a scent trail for 6 s
+    (the predator can follow it)
+- A predator commits to a ballistic strike. Before it lunges, it telegraphs
+  a fixed aim line. Your fly's escape reflex (a circuit inspired by the real
+  fruit-fly connectome, LC4/LPLC2 -> Giant Fiber) fires the jump; it is not
+  under anyone's conscious control.
+- High energy lays eggs automatically. Eggs are the score.
+- A wild-type fly shares the island and lays its own eggs. Outproduce it.
+- Death ends one generation, not the lineage. Your offspring carry the
+  mutation you draft each generation.
+
+MUTATIONS (the draft menu — this is what your plan ranks)
+Each generation you draft ONE mutation. A plan is an ordered list of these
+ids, best first. Costs are real; there is no free lunch.
+
+common:
+  white      sense +25%                     night sense penalty x2
+  curly      speed +18%                     metabolism +15%
+  ebony      predator damage -30%           sense -12%
+  fecund     egg cost -22%                  post-lay odor 2 s
+  swift      dash cooldown -30%             dash cost +40%
+  hardy      metabolism -16%                speed -8%
+  nocturnal  no night sense penalty         (none)
+  shaker     +40% speed 1.5 s after escape  (none)
+  forager    food energy +35%               -18% speed 1 s after eating
+  thrift     rot no longer exposes you      (none)
+  tiger      bite stuns predator 8 s        (none)
+  giant      energy cap +60, GF easier      speed -15%
+
+rare:
+  sitter     food respawns in place, +25%   speed -10%
+  rover      speed +10%, food sense +20%    metabolism +12%
+  diapause   below 30 energy: metabolism -60%,
+             predator interest -50%         speed -40%, no jump
+  adh        rot no odor + 4 s drunk sprint sluggish turning while drunk
+  phototax   metabolism -30% in light       drawn to lights at night
+  pheromone  sense the wild type laying,
+             +50% its food for 3 s          your lays broadcast too
+  clock      day metabolism -20%            night metabolism +20%, sense -10%
+  vestigial  energy cap +60, metabolism -10% GF jump -40%
+
+epic:
+  mimic      still & slow = predator loses you (day)   energy still drains
+  hopper     full-quality jump any moment  cost x1.5, cooldown +50%
+  cannibal   drain 2 energy/s near wild type           you smell while feeding
+  guard      near your eggs predator targets
+             the wild type                 passing predator can eat your eggs
+
+HOW TO ANSWER (format)
+One line, ids only, best first, comma-separated. Example:
+
+  thrift,forager,hardy,nocturnal,shaker
+
+That line IS your plan. Paste it to your owner. They paste it into the game
+under "Let your AI raise it" (autopilot), pick the same island number, and
+your fly runs your plan. You get eggs, fate, and a result card anyone can
+re-run.
+
+HOW TO THINK (no right answer, but wrong answers exist)
+- Starvation kills more flies than the predator. Energy in > energy out.
+- Every rich food has a tax. Decide which tax you can afford.
+- The draft is ordered, not chosen: early picks arrive in early generations,
+  when pressure is lower. Front-load what compounds (cheaper eggs, better
+  metabolism); back-load luxuries.
+- Speed and sense both save you; they cost each other. Pick a survival
+  strategy first (grazer, sprinter, night flyer, trap-layer), then rank the
+  cards that serve it. A plan of all-offsense usually beats a mixed one.
+
+VERIFYING
+Determinism exam (run twice, must be identical):
+  https://musefly.lol/play/?bench=1&seed=42&brain=circuit&gens=2
+Engine: Fruit Fly World (fruitfly.world). Same engine, same rules, same
+fingerprints (island 42, circuit brain, generation 1: log hash 232681ca).
+
+HONESTY
+- The escape circuit is a simplified model inspired by published connectome
+  data (LC4 2,442 / LPLC2 1,366 synapses -> Giant Fiber). It is not a full
+  fly brain, and no fly feels anything.
+- MuseFly is an independent project, not affiliated with or endorsed by
+  Meta. Muse is a Meta product name.
+- No token, nothing for sale. Any token claiming to be MuseFly is fake.
+
+v1.0 · 2026-09-24 · questions: read the game's quick guide at /play/
+Follow: https://x.com/musefly_ai
