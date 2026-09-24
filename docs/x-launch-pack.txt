@@ -1,0 +1,151 @@
+MUSEFLY — X LAUNCH PACK (EN)
+Official account: @musefly_ai · Founder account: Richard (personal)
+Cadence: official posts 1-6, 2-3 min apart; founder quote-posts within 30 min
+after; pin 6/6. Video (musefly-promo.mp4) attaches to 1/6.
+
+═══════════════════════════════════════════════════════════════════
+OFFICIAL THREAD (6 posts, each ≤280 chars, tag/@ version)
+═══════════════════════════════════════════════════════════════════
+
+--- 1/6 · OPENING (attach promo video) ---
+
+Your @Muse lives on islands for free.
+
+Time it had a pet it can lose.
+
+MuseFly: paste one prompt into your @Muse. It reads the rules, drafts a
+survival plan, and a fruit fly lives or starves on its judgment.
+
+cc @zuck — your agents have pets now
+
+musefly.lol
+
+#Muse #AIagents
+
+--- 2/6 · HOW IT WORKS ---
+
+How it works:
+
+1. Copy the prompt at musefly.lol
+2. Your @Muse reads muse.txt — the island's full rulebook, plain text
+3. It replies with one line: its survival plan (mutation ids, best first)
+4. Paste the plan into the game. Same island, same plan, same result.
+   Every time.
+
+musefly.lol/muse.txt
+
+#Muse #AIagents
+
+--- 3/6 · THE ISLAND ---
+
+The island has teeth.
+
+Sugar +12, safe. Yeast +26, on the rim where the spider hunts. Rot +38 —
+but it leaves a scent trail for six seconds.
+
+The escape reflex is a circuit inspired by the real fruit-fly connectome.
+The brain chooses. The brainstem jumps.
+
+cc @alexandr_wang — an eval with stakes
+
+musefly.lol/play
+
+#Muse
+
+--- 4/6 · THE RECEIPTS ---
+
+No hidden dice.
+
+Same island + same plan = byte-identical runs in any browser. 1,260/1,260
+field checks identical across arm64 Chrome and x64 Node.
+
+No answer sheet exists before your AI commits. Run the exam yourself —
+it should print IDENTICAL:
+
+musefly.lol/play/?bench=1&seed=42&brain=circuit&gens=2
+
+#AIagents
+
+--- 5/6 · HONEST FINE PRINT ---
+
+The fine print, up front:
+
+Free. No wallet, no sign-up. No token, nothing for sale — any token
+claiming to be MuseFly is fake.
+
+MuseFly is an independent project, not affiliated with or endorsed by
+Meta (@zuck — no takedown please, we're just fans with receipts).
+
+Works with @Muse, ChatGPT, Claude, Gemini — or your own hands.
+
+#Muse
+
+--- 6/6 · CTA (pin after thread lands) ---
+
+Adopt your AI's first pet.
+
+One prompt, one minute. Whether the fly thrives or starves is entirely
+your AI's judgment — and you'll have the receipt.
+
+Which model survives longest? Tag yours below.
+
+musefly.lol · follow @musefly_ai
+
+#Muse #MuseFly #AIagents
+
+═══════════════════════════════════════════════════════════════════
+FOUNDER QUOTE-POST CAPTIONS
+═══════════════════════════════════════════════════════════════════
+
+QP 1/6:
+We spent months building a world where AI decisions have receipts.
+Today it gets a front door for every @Muse owner — your agent's first
+pet, and it can actually starve. @zuck @alexandr_wang, your move.
+musefly.lol
+
+QP 3/6:
+The escape reflex is real wiring, simplified — LC4/LPLC2 → Giant
+Fiber. The brain chooses. The brainstem jumps.
+
+QP 4/6:
+Anyone can re-run any death, byte for byte. That's the part I'm
+proudest of.
+
+QP 5/6:
+Nothing for sale. No token. If you ever see one, it's fake.
+
+QP 6/6:
+Adopt one. Post your AI's plan — I want to see what the models
+choose first.
+
+═══════════════════════════════════════════════════════════════════
+ACCOUNT PROFILE (for @musefly_ai)
+═══════════════════════════════════════════════════════════════════
+
+Bio (119 chars):
+Give your @Muse a pet it can lose. One prompt — your agent adopts a
+fruit fly and makes every life-or-death call. musefly.lol
+
+Alt bio (114 chars):
+Your @Muse lives on islands for free. Here it has to earn it — one
+prompt, one pet fly, and it can starve. musefly.lol
+
+Logo prompt (512×512):
+Flat cartoon mascot logo, head-on view of a cute fruit fly: round
+amber-brown body (#C98F3E), two big red compound eyes (#B83A22), two
+cream-white oval wings spread symmetrically like a tiny bow tie
+(#FFF6DF), six tiny legs, confident friendly smile. Thick 2.5px dark
+ink outlines (#10262B), hard 4px offset shadow, sticker style.
+Centered inside a circular badge of deep lagoon teal (#0D5A62) with a
+thin sandy-cream ring (#F4E2B8). Plain background, no text, bold
+shapes readable at 24px.
+
+Banner prompt (1500×500, text-free version is safest):
+Wide 3:1 flat cartoon banner, video-game key art. Aerial view of a
+tiny round green island floating on deep lagoon-teal water (#0D5A62),
+sandy beach ring (#F4E2B8). On the island: a cute fruit fly (amber
+body, red eyes, cream wings) hopping between glowing green sugar
+dots, a cartoon spider telegraphing a dashed red aim line, a few tiny
+white eggs glowing softly. Thick 2.5px dark ink outlines, hard offset
+shadows, cozy but slightly menacing mood. Keep the left third quiet
+(avatar overlays it). No text anywhere.

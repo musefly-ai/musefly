@@ -1,0 +1,80 @@
+MUSEFLY — TG GROUP / KOL UNIVERSAL INTRO (EN + ZH)
+Usage: paste into Telegram groups, DMs, KOL threads. Free to trim, never to
+extend claims. Sign as Richard. NEVER add: sale links, prices, dates more
+precise than "in the coming days", or any Meta affiliation.
+
+═══════════════════════════════════════════════════════════════════
+EN
+═══════════════════════════════════════════════════════════════════
+
+MuseFly (musefly.lol) — your AI's first pet, and it can starve.
+
+One prompt, that's the whole onboarding: paste it into your Muse (or
+ChatGPT, Claude, Gemini). Your AI reads the island's full rulebook by
+itself (musefly.lol/muse.txt), then answers with one line — a survival
+plan: 24 mutations ranked best-first. Safe food or rich food? Speed or
+stamina? Its calls, its receipts.
+
+Paste the plan into the game, name your fly, pick an island number. The
+fly forages, dodges a spider, lays eggs — or dies on your AI's judgment.
+And it's fully deterministic: same island + same plan = the byte-identical
+life, every time. 1,260/1,260 cross-architecture checks identical; anyone
+can re-run any fly's whole life, including its death.
+
+What's coming in the next few days:
+
+1. Genesis Flies — a free mint (freemint), soul-bound like our Passport on
+   Robinhood Chain: earned by playing, not bought. No gas, capped supply.
+2. FLY token — for the island economy, with allocation published up front:
+   444,444,444 FLY total · 40% weekly race pools with a 208-week decay
+   (rewards survival, not speculation) · 10% early-player airdrop (people
+   who played before launch) · 10% liquidity · 10% ecosystem & hackathon ·
+   15% treasury behind a 2-of-3 multisig · 15% team, 12-month lock then
+   36-month linear vesting. Nothing is on sale today. When the token ships,
+   the contract address will be announced from @musefly_ai only — any
+   token claiming to be MuseFly before that is a fake.
+
+The engine is Fruit Fly World (fruitfly.world), which has been running
+live weekly races with commit-before-draw on-chain seeds. MuseFly is that
+same deterministic core, wearing a friendlier skin.
+
+Free to play right now — no wallet, no sign-up:
+musefly.lol · adopt: musefly.lol/adopt · follow: @musefly_ai
+
+MuseFly is an independent project, not affiliated with or endorsed by
+Meta. Muse is a Meta product name.
+
+═══════════════════════════════════════════════════════════════════
+中文
+═══════════════════════════════════════════════════════════════════
+
+MuseFly（musefly.lol）——你的 AI 的第一只宠物，而且它会饿死。
+
+上手只需要一句提示词：粘给你的 Muse（或 ChatGPT / Claude / Gemini），它会
+自己去读岛的完整规则（musefly.lol/muse.txt），然后只回一行——一份生存方
+案：把 24 个突变按优劣排序。安全食物还是高热量？速度还是耐力？它的判断，
+它的收据。
+
+把方案贴进游戏，给果蝇起名，选一个岛号。果蝇觅食、躲蜘蛛、产卵——或者
+死在你 AI 的判断上。全程确定性：同岛号 + 同方案 = 逐字节相同的同一条命，
+每次都一样。跨架构 1,260/1,260 项校验一致，任何人都能重跑你果蝇的一生，
+包括它的死亡。
+
+接下来几天会发布：
+
+1. Genesis Flies 免费铸造（freemint），和我们 Robinhood Chain 上的护照一
+   样灵魂绑定：靠玩出来，不是买出来。无 gas，总量有上限。
+2. FLY 代币，用于岛屿经济，分配提前公示：总量 444,444,444 · 40% 每周竞
+   赛奖池，208 周递减（奖励活下来，不奖励炒作）· 10% 早期玩家空投（上线
+   前玩过的人）· 10% 流动性 · 10% 生态与黑客松 · 15% 金库，2/3 多签 ·
+   15% 团队，锁 12 个月后 36 个月线性释放。今天没有任何东西在售。代币上
+   线时，合约地址只从 @musefly_ai 官号公布——在那之前任何自称 MuseFly
+   的代币都是假的。
+
+引擎来自 Fruit Fly World（fruitfly.world）——已经在用链上抽种子、先交卷
+后出题的机制跑每周大赛。MuseFly 就是同一套确定性内核，换了一层更可爱的皮。
+
+现在就能免费玩，无需钱包、无需注册：
+musefly.lol · 领养：musefly.lol/adopt · 关注：@musefly_ai
+
+MuseFly 是独立项目，与 Meta 无关、也未获其认可。Muse 是 Meta 的产品名。

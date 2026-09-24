@@ -4,6 +4,7 @@ import { sfx } from "./audio.js";
 
 const $=id=>document.getElementById(id);
 let gameScene=null;
+let draftPlanTimer=null; // MuseFly plan auto-draft countdown (one at a time)
 // tr: one-line localizer for scene-layer messages. The scene imports this so
 // every user-facing log line follows the language selector.
 export function tr(en,zh){ return language==="zh"?zh:en; }
@@ -269,7 +270,7 @@ function showDraft(d){
     const info=traitCopy(tid);
     const owned=gameScene.state.ownedTraits.filter(t=>t===tid).length;
     const el=document.createElement("div");
-    el.className="mcard";
+    el.className="mcard"; el.dataset.tid=tid;
     el.innerHTML=`<div class="mname">${info.name}${owned?` <span class="cnt" style="color:var(--gold)">×${owned}</span>`:""}</div>`+
       `<div class="mdesc"><span class="mgood">${info.good}</span>${info.bad?`<br><span class="mbad">${info.bad}</span>`:""}</div>`+
       (info.syn?`<div class="msyn">⚙ ${info.syn}</div>`:"");
@@ -281,6 +282,32 @@ function showDraft(d){
     });
     wrap.appendChild(el);
   });
+  // MuseFly: the adopted plan (/adopt or ?plan=) marks the AI's pick and
+  // auto-drafts it after a countdown. A human tap on any card overrides.
+  try{
+    if(draftPlanTimer){ clearInterval(draftPlanTimer); draftPlanTimer=null; }
+    const plan=JSON.parse(localStorage.getItem("musefly_plan_v1")||"[]");
+    const pick=Array.isArray(plan)?plan.find(t=>d.cards.includes(t)):null;
+    if(pick){
+      const el=wrap.querySelector(`.mcard[data-tid="${pick}"]`);
+      if(el){
+        el.classList.add("aiPick");
+        const tag=document.createElement("div"); tag.className="aiPickTag"; tag.textContent="YOUR AI'S PICK";
+        el.appendChild(tag);
+        const cd=document.createElement("div"); cd.className="aiPickCd"; cd.textContent="auto-drafts in 3…";
+        el.appendChild(cd);
+        let n=3;
+        draftPlanTimer=setInterval(()=>{
+          n--;
+          if(n>0){ cd.textContent=`auto-drafts in ${n}…`; return; }
+          clearInterval(draftPlanTimer); draftPlanTimer=null;
+          if(el.isConnected&&$("draft").classList.contains("show")) el.click();
+        },1000);
+        wrap.querySelectorAll(".mcard").forEach(c=>c.addEventListener("click",
+          ()=>{ clearInterval(draftPlanTimer); draftPlanTimer=null; },{once:true}));
+      }
+    }
+  }catch(_){ /* no plan, no problem */ }
   $("dRival").textContent=en?`Wild type has accumulated ${gameScene.rivalFly.rivalTraits.length} mutations — it evolves too.`:`野生型已积累 ${gameScene.rivalFly.rivalTraits.length} 个突变 — 它也在进化。`;
   document.querySelectorAll(".brainReport").forEach(e=>e.remove());
   document.querySelectorAll(".questLine").forEach(e=>e.remove());

@@ -2,6 +2,7 @@
 import { BootScene } from "./scene-boot.js";
 import { GameScene } from "./scene-game.js";
 import { initUI } from "./ui.js";
+import { TRAIT_INFO } from "./sim.js";
 
 // portrait phones get a tall canvas so the dish fills the screen width
 // (900x760 in a 390x844 viewport letterboxes the dish down to ~250px)
@@ -25,6 +26,19 @@ const checkReady=setInterval(()=>{
   if(scene&&scene.state&&!scene.__uiInited){
     scene.__uiInited=true; clearInterval(checkReady); initUI(scene);
     const qp=new URLSearchParams(location.search);
+    // MuseFly adoption hand-off (/adopt): ?seed=N&plan=id1,id2 — the owner's
+    // AI already drafted; the game marks its pick on every mutation draft
+    // and auto-drafts it after a short countdown (a human tap overrides).
+    const seedParam=parseInt(qp.get("seed"),10);
+    if(!isNaN(seedParam)&&seedParam>0&&typeof scene.setSeed==="function"){
+      scene.setSeed(seedParam>>>0);
+    }
+    const planParam=qp.get("plan");
+    if(planParam){
+      const valid=[...new Set(planParam.split(",").map(s=>s.trim().toLowerCase()).filter(id=>TRAIT_INFO[id]))];
+      if(valid.length) localStorage.setItem("musefly_plan_v1",JSON.stringify(valid));
+      history.replaceState(null,"",location.pathname);
+    }
     // agent hand-off: a headless autopilot run produces quest evidence the
     // operator imports by opening one URL (built by public/skill/ffw-dish)
     const imp=qp.get("import");
