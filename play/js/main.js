@@ -32,6 +32,8 @@ const checkReady=setInterval(()=>{
     const seedParam=parseInt(qp.get("seed"),10);
     if(!isNaN(seedParam)&&seedParam>0&&typeof scene.setSeed==="function"){
       scene.setSeed(seedParam>>>0);
+      // the Genesis claim on the homepage pre-fills the island you actually played
+      try{ localStorage.setItem("musefly_last_seed_v1",String(seedParam>>>0)); }catch(e){}
     }
     const planParam=qp.get("plan");
     if(planParam){

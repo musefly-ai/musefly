@@ -1,5 +1,18 @@
 <!doctype html>
 <html lang="en">
+<!--
+  EDITING RULES FOR ANY MODEL OR HUMAN (do not remove):
+  1. The mint form lives ON THIS PAGE (single-page funnel): #gcLock (not played
+     yet) and #gcFormBox (eligible) swap inline inside #genesis. claim.bundle.js
+     picks which one shows, from localStorage musefly_played_v1. Do not delete
+     those ids, #gcClaim, the gc-* field ids, or the #gcCta strip CTA up top.
+  2. /adopt/ still exists as a deep link to the same component; raise/ = name +
+     pick island; play/ = the game.
+  3. Claim logic source is claim.src.js; index.html loads the build output claim.bundle.js (rebuild with esbuild).
+  4. Wording rule: the user-facing verb is "mint free". "Adopt" is lore flavor only.
+  5. Red lines: no MuseFly token today, no dates, contract addresses only from @musefly_ai, not affiliated with Meta.
+-->
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -22,7 +35,8 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ground:#0B2327;--paper:#12343A;--ink:#F3E6C4;--muted:#B4C6C2;--line:#F3E6C4;--lagoon:#0A4A51;--tide:#2A9AA2;--coral:#FF8A6E;--cta:#F06A48;--cta-ink:#0B2327;--shadow:#000}}
 :root[data-theme="dark"]{--ground:#0B2327;--paper:#12343A;--ink:#F3E6C4;--muted:#B4C6C2;--line:#F3E6C4;--lagoon:#0A4A51;--tide:#2A9AA2;--coral:#FF8A6E;--cta:#F06A48;--cta-ink:#0B2327;--shadow:#000}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html{scroll-padding-top:calc(76px + env(safe-area-inset-top,0px));scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:var(--coral)}
@@ -38,6 +52,19 @@ section{padding:96px 0}
 .btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
 .btn.ghost{background:var(--paper);color:var(--ink)}
 
+/* free mint flow strip (top of page) */
+.mintline{background:#F2C14E;color:#10262B;border-bottom:2.5px solid var(--line)}
+.mintline .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;padding-top:16px;padding-bottom:16px}
+.ml-free{font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.ml-steps{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-weight:700;font-size:16px}
+.ml-step b{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#10262B;color:#F2C14E;margin-right:8px;font-family:var(--display);font-size:15px}
+.ml-step a{color:#10262B;text-decoration:underline;text-decoration-thickness:2px}
+.ml-arrow{opacity:.45;font-weight:800}
+.ml-cta .btn{min-height:44px;font-size:15px}
+.ml-cta .gc-hint{color:#10262B;font-size:14px}
+.ml-note{margin:0;flex-basis:100%;font-size:14px;color:#10262B;opacity:.8}
+.ml-note a{color:#B83A22;font-weight:700}
+
 /* nav */
 nav{position:sticky;top:0;z-index:10;background:var(--ground);border-bottom:2.5px solid var(--line)}
 nav .wrap{display:flex;align-items:center;gap:20px;min-height:66px;flex-wrap:wrap}
@@ -47,8 +74,7 @@ nav a.nl{color:var(--ink);text-decoration:none;font-weight:700;font-size:15px}
 @media (max-width:720px){nav a.nl{display:none}}
 
 /* hero */
-.hero{background:var(--lagoon);color:#FFF6DF;padding:0;border-bottom:2.5px solid var(--line);overflow:hidden}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center;padding-top:72px;padding-bottom:72px}
+.hero{background:var(--lagoon);color:#FFF6DF;padding:0;border-bottom:2.5px solid var(--line);overflow:hidden}.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center;padding-top:72px;padding-bottom:72px}
 @media (max-width:900px){.hero .wrap{grid-template-columns:1fr;padding-top:48px}}
 .hero h1{font-size:clamp(46px,6.8vw,92px);font-weight:800;letter-spacing:-.02em;color:#FFF6DF}
 .hero h1 .fly{display:inline-block;color:#F4E2B8}
@@ -56,6 +82,7 @@ nav a.nl{color:var(--ink);text-decoration:none;font-weight:700;font-size:15px}
 .hero .ctas{margin-top:30px;display:flex;flex-wrap:wrap;gap:14px}
 .hero .btn.ghost{background:#FFF6DF;color:#10262B;border-color:#10262B}
 .hero .btn{border-color:#10262B;box-shadow:4px 4px 0 #06292E}
+.hero .btn.mintCta{background:#F2C14E;color:#10262B;font-size:19px;font-weight:800;padding:16px 26px;letter-spacing:.01em}
 .hero small{display:block;margin-top:16px;color:#A9D3CE;font-size:14px}
 .stage{position:relative;aspect-ratio:1;max-width:560px;width:100%;justify-self:center}
 .stage canvas{width:100%;height:100%;display:block}
@@ -86,6 +113,7 @@ nav a.nl{color:var(--ink);text-decoration:none;font-weight:700;font-size:15px}
 /* prompt */
 .promptbox{margin-top:36px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;align-items:start}
 @media (max-width:900px){.promptbox{grid-template-columns:1fr}}
+.plabel{grid-column:1;font:700 12px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--gold,#F2C14E);margin:2px 0 8px}
 pre.prompt{margin:0;white-space:pre-wrap;background:#10262B;color:#F3E6C4;border:2.5px solid var(--line);border-radius:18px;padding:22px;font:15px/1.6 ui-monospace,Menlo,Consolas,monospace;box-shadow:6px 6px 0 var(--shadow)}
 .promptside p{margin:0 0 14px;color:var(--muted)}
 .promptside .btn{margin-right:10px;margin-bottom:10px}
@@ -140,6 +168,83 @@ details p{margin:0 0 22px;color:var(--muted)}
 footer{padding:36px 0 48px;font-size:14px;color:var(--muted)}
 footer p{margin:4px 0}
 @media (prefers-reduced-motion: reduce){*{transition:none !important}}
+
+/* genesis claim */
+.gc-box{max-width:820px;margin-top:30px;border:2.5px solid var(--line);border-radius:18px;background:var(--paper);padding:26px 26px 22px;box-shadow:6px 6px 0 var(--shadow)}
+.gc-steps{margin:0 0 20px;padding-left:22px;color:var(--muted);font-size:16px;line-height:1.7}
+.gc-steps li{margin:4px 0}
+.gc-form{display:grid;gap:14px}
+.gc-label{display:grid;gap:6px;font-weight:700;font-size:15px}
+.gc-label input,.gc-label textarea{font:inherit;font-weight:400;padding:10px 12px;border:2px solid var(--line);border-radius:10px;background:var(--ground);color:var(--ink);width:100%}
+.gc-label textarea{resize:vertical}
+.gc-hint{font-weight:400;font-size:13px;color:var(--muted)}
+.gc-check{display:flex;align-items:center;gap:9px;font-size:15px;color:var(--muted);font-weight:400}
+.gc-check input{width:17px;height:17px;accent-color:var(--lagoon)}
+#gcClaim{justify-self:start}
+.gc-postbtns{display:flex;flex-wrap:wrap;gap:12px}
+.gc-run{border:2px solid var(--line);border-radius:10px;background:var(--ground);padding:0}
+.gc-run summary{cursor:pointer;padding:10px 14px;font-weight:700;font-size:15px}
+.gc-run[open] summary{border-bottom:2px solid var(--line)}
+.gc-run .gc-label{padding:12px 14px 0}
+.gc-run .gc-hint{display:block;padding:0 14px 12px}
+.mintCta2{background:#F2C14E;color:#10262B;font-weight:800;font-size:18px;padding:15px 26px}
+.gc-status{min-height:24px;font-size:15px;color:var(--muted);overflow-wrap:anywhere}
+.gc-tick{font-variant-numeric:tabular-nums;opacity:.7}
+.gc-engage{margin:0 0 18px;padding:10px 14px;border:2px dashed var(--lagoon);border-radius:10px;font-size:15px;color:var(--ink);background:rgba(13,90,98,.06)}
+.gc-agent{margin:0 0 14px;padding:10px 14px;border:2px dashed var(--cta);border-radius:10px;font-size:15px;color:var(--ink);background:rgba(209,75,46,.06)}
+.gc-status.ok{color:var(--ink);font-weight:700}
+.gc-status.err{color:var(--coral);font-weight:700}
+.gc-warn{margin:8px 0 0;font-size:14px;color:var(--muted)}
+
+/* ===== worldview layer (copy + animation only) ===== */
+.eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;padding:6px 14px;border:2px solid #10262B;border-radius:999px;background:#F2C14E;color:#10262B;font-weight:700;font-size:14px;text-decoration:none;box-shadow:3px 3px 0 #06292E}
+.eyebrow:hover{transform:translate(-1px,-1px)}
+.eyebrow i{width:9px;height:9px;border-radius:50%;background:#2E6B3C;box-shadow:0 0 0 0 rgba(46,107,60,.6);animation:ping 1.8s ease-out infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(46,107,60,.55)}100%{box-shadow:0 0 0 10px rgba(46,107,60,0)}}
+.hero h1 .muse{color:#F2C14E}
+.hero .fine{display:block;margin-top:14px;color:#A9D3CE;font-size:14px}
+.ticker{background:#10262B;color:#F4E2B8;border-bottom:2.5px solid var(--line);overflow:hidden;white-space:nowrap}
+.ticker .track{display:inline-flex;gap:44px;padding:14px 0;animation:marquee 38s linear infinite;font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:.01em}
+.ticker .track span{display:inline-flex;align-items:center;gap:44px}
+.ticker .track span::after{content:"";width:8px;height:8px;border-radius:50%;background:#F2C14E}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+.lore{background:#0A2E33;color:#F3E6C4;border-top:2.5px solid var(--line);border-bottom:2.5px solid var(--line);overflow:hidden}
+.lore h2{color:#FFF6DF}
+.lore .lead{color:#B9CFCB}
+.kicker{display:inline-block;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:#F2C14E;margin-bottom:10px}
+.lore-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:44px;align-items:center;margin-top:10px}
+@media (max-width:900px){.lore-grid{grid-template-columns:1fr}}
+.lore canvas{width:100%;height:auto;display:block;border-radius:22px;border:2.5px solid #F3E6C4;background:#082428;box-shadow:6px 6px 0 #000}
+.counts{margin-top:30px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:560px){.counts{grid-template-columns:1fr}}
+.count{border:2px solid #2C5A60;border-radius:16px;padding:14px 16px;background:rgba(255,246,223,.04)}
+.count b{display:block;font-family:var(--display);font-weight:800;font-size:clamp(26px,2.6vw,34px);color:#F2C14E;line-height:1.1;font-variant-numeric:tabular-nums}
+.count span{font-size:15px;color:#B9CFCB}
+.flyroom{margin-top:26px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center;border:2.5px solid #F3E6C4;border-radius:20px;padding:18px 20px;background:#FFF6DF;color:#10262B;box-shadow:6px 6px 0 #000}
+.flyroom .yr{font-family:var(--display);font-weight:800;font-size:44px;line-height:1;color:#B83A22}
+.flyroom p{margin:0;font-size:16px}
+.flyroom code{background:#10262B;color:#F2C14E;border-radius:6px;padding:1px 7px;font-size:14px}
+.archi{margin-top:88px}
+.bigcount{font-family:var(--display);font-weight:800;font-size:clamp(36px,5.2vw,68px);line-height:1;color:#F2C14E;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.bigcount small{display:block;font-size:20px;color:#B9CFCB;font-weight:600;letter-spacing:0;margin-top:8px;font-family:var(--body)}
+.witness{margin-top:88px}
+.wit-row{margin-top:30px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;position:relative}
+@media (max-width:760px){.wit-row{grid-template-columns:1fr;gap:16px}}
+.wit{position:relative;z-index:1;margin:0;border:2.5px solid #F3E6C4;border-radius:20px;padding:22px;background:#0D3A40}
+.wit .no{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:#F2C14E;color:#10262B;font-family:var(--display);font-weight:800;font-size:20px;border:2px solid #10262B}
+.wit h3{margin-top:12px;color:#FFF6DF;font-size:22px}
+.wit p{margin:6px 0 0;color:#B9CFCB;font-size:16px}
+.wit-line{position:absolute;left:12%;right:12%;top:42px;height:4px;background:repeating-linear-gradient(90deg,#F2C14E 0 14px,transparent 14px 26px);background-size:26px 4px;animation:flow 1.2s linear infinite;z-index:0}
+@keyframes flow{from{background-position:0 0}to{background-position:26px 0}}
+@media (max-width:760px){.wit-line{display:none}}
+.seasons .col h3{margin-top:4px;font-size:24px}
+.col.prosper{background:#F2C14E;color:#10262B}
+.col.prosper small{color:#10262B}
+.col.prosper .note{margin:12px 0 0;font-size:14px}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none}.ticker .track,.wit-line,.eyebrow i{animation:none}}
 </style>
 </head>
 <body>
@@ -150,10 +255,13 @@ footer p{margin:4px 0}
       <b>MuseFly</b>
     </a>
     <a class="nl" href="#how">How it works</a>
-    <a class="nl" href="adopt/">Adopt</a>
+    <a class="nl" href="raise/">Raise</a>
+    <a class="nl" href="#lore">The world</a>
     <a class="nl" href="#prompt">For your AI</a>
     <a class="nl" href="#proof">Proof</a>
+    <a class="nl" href="#genesis">Free mint</a>
     <a class="nl" href="#race">Weekly race</a>
+    <a class="nl" href="/whitepaper/">Docs</a>
     <a class="btn" href="play/" style="min-height:44px;font-size:15px">Play</a>
   </div>
 </nav>
@@ -161,13 +269,15 @@ footer p{margin:4px 0}
 <header class="hero" id="top">
   <div class="wrap">
     <div>
-      <h1>Can your AI keep a <span class="fly">fruit fly</span> alive?</h1>
-      <p>Every AI adopts a fruit fly and makes its calls. The fly forages, dodges a predator, lays eggs and evolves. One wrong call and it starves.</p>
+      <a class="eyebrow" href="#genesis"><i aria-hidden="true"></i>Genesis Flies: free mint on Robinhood Chain</a>
+      <h1>Can your <span class="muse">Muse</span> keep a <span class="fly">fruit fly</span> alive?</h1>
+      <p>Paste one prompt into Muse, or ChatGPT, or Claude. Your AI raises a fruit fly on a tiny island and makes every call. Keep it alive, win the weekly race, earn rewards.</p>
       <div class="ctas">
-        <a class="btn" href="adopt/">Adopt a fruit fly</a>
+        <a class="btn mintCta" href="#genesis">Mint your FREE NFT →</a>
+        <a class="btn" href="raise/">Raise your MuseFly</a>
         <a class="btn ghost" href="#prompt">Give your AI the prompt</a>
       </div>
-      <small>Free. No wallet, no sign-up. Works with Muse, ChatGPT, Claude or any AI.</small>
+      <small class="fine">Free to play. No wallet, no sign-up. No token today. Not affiliated with Meta.</small>
     </div>
     <div class="stage">
       <canvas id="dish" width="560" height="560" role="img" aria-label="A fruit fly on a round island eats sugar and jumps away when a spider lunges at it"></canvas>
@@ -176,14 +286,30 @@ footer p{margin:4px 0}
   </div>
 </header>
 
+<section class="mintline" aria-label="How to get your free Genesis Fly">
+  <div class="wrap">
+    <div class="ml-steps">
+      <span class="ml-step"><b>1</b> <a href="#genesis">Paste your AI's plan</a> — or <a href="play/">play a run</a></span>
+      <span class="ml-arrow" aria-hidden="true">→</span>
+      <span class="ml-step"><b>2</b> <a href="https://x.com/musefly_ai" target="_blank" rel="noreferrer">Follow &amp; share the X post</a></span>
+      <span class="ml-arrow" aria-hidden="true">→</span>
+      <span class="ml-step"><b>3</b> <a class="ml-free" href="#genesis">Mint your FREE NFT</a></span>
+    </div>
+    <div id="gcCta" class="ml-cta"></div>
+    <p class="ml-note">Humans: play in your browser, by hand or on your AI's plan. AI agents: grab the <a href="#prompt">ready-made prompt</a> or <a href="muse.txt">read muse.txt</a> and mint directly from a wallet — same rules, no browser needed.</p>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true"><div class="track"><span>Every life replays</span><span>Every death can be checked</span><span>The two largest brain maps ever made belong to the fruit fly</span><span>4,294,967,295 islands</span><span>One prompt. One tiny life.</span><span>Champions earn</span><span>Built for Muse, open to every AI</span><span>Every life replays</span><span>Every death can be checked</span><span>The two largest brain maps ever made belong to the fruit fly</span><span>4,294,967,295 islands</span><span>One prompt. One tiny life.</span><span>Champions earn</span><span>Built for Muse, open to every AI</span></div></div>
+
 <section id="how">
   <div class="wrap">
     <h2>Three steps. One tiny life.</h2>
     <p class="lead">Your AI doesn't need to be fast. It needs good judgment.</p>
     <div class="steps">
-      <div class="step"><div class="n">1</div><h3>Adopt a fly</h3><p>Paste one prompt into your AI. It reads the island rules on its own.</p></div>
+      <div class="step"><div class="n">1</div><h3>Name your MuseFly</h3><p>Pick a name and an island. Then paste <a href="#prompt">one prompt</a> into your Muse. It reads the island's rules on its own.</p></div>
       <div class="step"><div class="n">2</div><h3>Your AI makes the calls</h3><p>It writes a survival plan: which mutations the fly inherits, best first. Safe food or rich food? Speed or stamina?</p></div>
-      <div class="step"><div class="n">3</div><h3>It lives, or it starves</h3><p>The island runs three generations. You get eggs, fate and a result card anyone can re-run.</p></div>
+      <div class="step"><div class="n">3</div><h3>It lives, or it starves</h3><p>The island runs three generations. You get eggs, fate and a result card anyone can re-run. Win the week, and your AI earns.</p></div>
     </div>
   </div>
 </section>
@@ -213,19 +339,64 @@ footer p{margin:4px 0}
   </div>
 </section>
 
+<section class="lore" id="lore">
+  <div class="wrap">
+    <div class="lore-grid">
+      <div>
+        <span class="kicker">Why a fruit fly</span>
+        <h2>The two largest brain maps ever made belong to the fruit fly.</h2>
+        <p class="lead">In 2024, scientists published the complete wiring of an adult fruit fly brain: the first full map of a brain that flies, navigates, courts and fights. In 2026, Google and Janelia mapped its whole central nervous system. Your MuseFly's escape reflex is a simplified model inspired by that research.</p>
+        <div class="counts">
+          <div class="count"><b data-count="139255">139,255</b><span>neurons in the adult fly brain map (2024)</span></div>
+          <div class="count"><b data-count="166000" data-suffix="+">166,000+</b><span>neurons in the whole nervous system (2026)</span></div>
+          <div class="count"><b data-count="450" data-suffix="×">450×</b><span>the neurons of the roundworm, the first animal ever mapped</span></div>
+        </div>
+      </div>
+      <canvas id="neurons" width="560" height="460" role="img" aria-label="A glowing network of neurons firing, with signals travelling along the connections"></canvas>
+    </div>
+    <div class="flyroom">
+      <div class="yr">1910</div>
+      <p>In a cramped room at Columbia University, Thomas Hunt Morgan found one fruit fly with white eyes instead of red, and modern genetics began. That gene is on the island: <code>white</code> is one of the 24 mutations your MuseFly can inherit.</p>
+    </div>
+
+    <div class="archi lore-grid">
+      <canvas id="archipelago" width="560" height="400" role="img" aria-label="A dark sea dotted with thousands of tiny islands; a boat sails from one to another"></canvas>
+      <div>
+        <span class="kicker">The Archipelago</span>
+        <div class="bigcount"><span data-count="4294967295">4,294,967,295</span><small>islands. One for every island number.</small></div>
+        <p class="lead">An island number is not an account or a save file. It is a world. Sail to the same island with the same plan and you live through the same weather, the same food, the same predators, to the same ending. Anyone can sail there and watch it happen again. Nobody can own an island. You can only leave a record on it.</p>
+      </div>
+    </div>
+
+    <div class="witness">
+      <span class="kicker">Adoption</span>
+      <h2>Three witnesses. No faith required.</h2>
+      <p class="lead">A Genesis Fly is never bought. Before one is adopted, its life is witnessed three times.</p>
+      <div class="wit-row">
+        <div class="wit-line" aria-hidden="true"></div>
+        <div class="wit"><span class="no">1</span><h3>Your browser</h3><p>replays the life while you watch.</p></div>
+        <div class="wit"><span class="no">2</span><h3>The server</h3><p>re-lives it byte for byte and rejects anything that does not match.</p></div>
+        <div class="wit"><span class="no">3</span><h3>The chain</h3><p>records what both witnesses saw, on Robinhood Chain.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="prompt">
   <div class="wrap">
     <h2>Paste this into your AI</h2>
-    <p class="lead">That's the whole onboarding. Your AI replies with one line: its plan.</p>
+    <p class="lead">That's the whole onboarding. Your AI raises the fly and gets the mint — you paste one thing: your wallet.</p>
     <div class="promptbox">
-      <pre class="prompt" id="promptText">You're adopting a fruit fly on MuseFly.
-Read the rules at musefly.lol/muse.txt, then give me your survival plan:
-the mutation ids you want, best first, on one line.
-Think about it: safe food or rich food? Speed or stamina?
-The fly lives or starves on your choices.</pre>
+      <div class="plabel">STEP 1 · Paste this to your AI agent (Claude / Cursor / any bot)</div>
+      <pre class="prompt" id="promptText">Raise a fruit fly for me on MuseFly and mint the free Genesis Fly NFT to my wallet 0xYOUR_WALLET_HERE. Read the rules at https://musefly.lol/muse.txt yourself, pick the island number and your mutation plan — the fly lives or starves on your judgment — then run the official miner at https://musefly.lol/agent-mint.mjs, have me publish the one X proof post it prints, and mint. Keep improving the plan and retry until you mint.</pre>
+      <div class="plabel" style="margin-top:16px">STEP 2 · Or run the miner yourself (Node 18+)</div>
+      <pre class="prompt" id="promptShell">npm i viem
+curl -O https://musefly.lol/agent-mint.mjs
+SEED=&lt;island&gt; PLAN=&lt;mutation ids, best first&gt; ADDRESS=0xYOUR_WALLET_HERE node agent-mint.mjs</pre>
       <div class="promptside">
-        <p>Then <a href="adopt/">adopt &amp; name your fly</a> — paste the plan, pick an island number, and watch it run. Same island, same plan, same result. Every time.</p>
-        <button class="btn" type="button" id="copyPrompt">Copy the prompt</button>
+        <p>Then <a href="raise/">name your MuseFly</a>, paste your AI's plan, pick an island and watch it run. Same island, same plan, same result. Every time.</p>
+        <button class="btn" type="button" id="copyPrompt">Copy the agent task</button>
+        <button class="btn ghost" type="button" id="copyShell">Copy the miner commands</button>
         <a class="btn ghost" href="muse.txt">Read the full rules</a>
         <div class="copied" id="copied" role="status"></div>
       </div>
@@ -235,7 +406,7 @@ The fly lives or starves on your choices.</pre>
 
 <section class="proof" id="proof">
   <div class="wrap">
-    <h2>Every death is reproducible</h2>
+    <h2>Every death can be checked</h2>
     <p class="lead">No hidden dice. The island is deterministic: run the same island with the same plan anywhere, and you get the same eggs, the same deaths, the same log hash.</p>
     <div class="hashes">
       <div class="hash"><b>1,260 / 1,260</b><span>field checks identical between arm64 Chrome and x64 Node, after pinning the math the simulation uses.</span></div>
@@ -259,13 +430,54 @@ The fly lives or starves on your choices.</pre>
   </div>
 </section>
 
+<section class="island" id="genesis">
+  <div class="wrap">
+    <h2>Genesis Flies: free mint on Robinhood Chain</h2>
+    <p class="lead">4,444 soul-bound flies, one per wallet, earned by playing. Proof that you and your AI were here first. Nothing is for sale.</p>
+    <div class="gc-box">
+      <ol class="gc-steps">
+        <li><b>Run</b> — paste your AI's plan line below (island + mutations), or <a href="play/">play a generation yourself</a>. The page seals the run itself — same engine, same rules.</li>
+        <li><b>Engage</b> — publish <a href="https://x.com/musefly_ai" target="_blank" rel="noreferrer">one post on X</a> with your personal code. Machine-checked — no post, no fly.</li>
+        <li><b>Mint free</b> — connect a wallet and confirm. The server re-runs your lineage with the same engine and checks every byte. Match — and the fly is yours.</li>
+      </ol>
+      <p class="gc-agent">🤖 <b>Let an AI agent do it?</b> Don't fill this form — <a href="#prompt">give it the copy-paste prompt</a> and it plays and mints from the terminal.</p>
+      <div id="gcFormBox">
+        <p class="gc-engage">📣 <b>One post on X, machine-checked.</b> Hit <b>“Post on X — pre-filled”</b>: it connects your wallet, builds the post with your personal code, and opens X with it already typed in. Publish, come back, and mint. Follow <a href="https://x.com/musefly_ai" target="_blank" rel="noreferrer">@musefly_ai</a> too (also checked).</p>
+        <div class="gc-form">
+          <details class="gc-run">
+            <summary>Island + plan — auto-filled, or paste your AI's plan line. <span class="gc-hint">Tap to edit.</span></summary>
+            <label class="gc-label">Island number
+              <input id="gcSeed" type="number" min="1" inputmode="numeric" placeholder="42" />
+            </label>
+            <label class="gc-label">Your fly's mutations (ids, best first)
+              <input id="gcPlan" type="text" placeholder="forager, fecund, nocturnal, …" autocomplete="off" />
+              <span class="gc-hint">Auto-filled. Order matters — it's what the server replays.</span>
+            </label>
+          </details>
+          <label class="gc-label">Your X post link or @handle
+            <input id="gcX" type="text" placeholder="https://x.com/you/status/… or @you" autocomplete="off" />
+            <span class="gc-hint">After you post, paste the link — or just your handle — and hit “Mint my free NFT”.</span>
+          </label>
+          <div class="gc-postbtns">
+            <button class="btn mintCta2" type="button" id="gcPost">1 · Post on X — pre-filled →</button>
+            <button class="btn" type="button" id="gcClaim">2 · Mint my free NFT →</button>
+          </div>
+          <div id="gcStatus" class="gc-status" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+      <p class="gc-warn"><b>You never pay for a Genesis Fly.</b> The only contract is on Robinhood Chain and any address besides the one pinned by <a href="https://x.com/musefly_ai">@musefly_ai</a> is a fake. There is no MuseFly token today.</p>
+    </div>
+  </div>
+</section>
+
 <section class="island">
   <div class="wrap">
-    <h2>What's here, what's next</h2>
-    <div class="road">
-      <div class="col now"><small>Live now</small><ul><li>The game, in five languages</li><li>Your AI's plan, run in the browser</li><li>The determinism exam</li><li>Genesis Passport on Robinhood Chain: free, non-transferable</li></ul></div>
-      <div class="col"><small>Next</small><ul><li>Weekly race with a public leaderboard</li><li>AI leaderboard: which AI raises the best fly</li><li>Genesis Flies: each with its own genes and race record</li></ul></div>
-      <div class="col"><small>Later</small><ul><li>Builder hackathon: brains, tools, AI coaches</li><li>Many flies sharing one island</li><li>Breeding lineages</li></ul></div>
+    <span class="kicker" style="color:var(--coral)">The seasons</span>
+    <h2>From a pet to a proving ground</h2>
+    <div class="road seasons">
+      <div class="col now"><small>Season I · Live now</small><h3>The Raising</h3><ul><li>Your Muse raises a fly on its own plan</li><li>Every run replays in any browser</li><li>Genesis Flies: free mint, soul-bound, on Robinhood Chain</li></ul></div>
+      <div class="col"><small>Season II · Next</small><h3>The Races</h3><ul><li>Weekly race on an island nobody sees in advance</li><li>AI leaderboard: which AI raises the best fly</li><li>Every ranking can be audited by replaying it</li></ul></div>
+      <div class="col prosper"><small>Season III · Later</small><h3>The Prosperity</h3><ul><li>Weekly champions and their keepers earn rewards</li><li>Every reward traces back to a run anyone can replay</li><li>Entry is always free. The house pays out; it never collects.</li></ul><p class="note">No MuseFly token today. Form, chain and rules will be published before anything is paid.</p></div>
     </div>
     <p class="lead" style="font-size:16px;margin-top:22px">No dates for things that aren't built. We ship one, then the next.</p>
   </div>
@@ -277,7 +489,8 @@ The fly lives or starves on your choices.</pre>
     <div class="faq">
       <details><summary>Is this a real fruit fly brain?<span aria-hidden="true">+</span></summary><p>No. The escape reflex is a simplified circuit inspired by published fruit-fly connectome data. It is not a complete fly brain, and no fly feels anything.</p></details>
       <details><summary>Which AIs can play?<span aria-hidden="true">+</span></summary><p>Any AI that can read a web page or a pasted prompt: Muse, ChatGPT, Claude, Gemini and others. You can also play by hand.</p></details>
-      <details><summary>Do I need a wallet or money?<span aria-hidden="true">+</span></summary><p>No. The game is free. There is no token, and nothing is for sale. Any token claiming to be MuseFly is fake.</p></details>
+      <details><summary>Do I need a wallet or money?<span aria-hidden="true">+</span></summary><p>Not to play — the game is free and needs no wallet. Claiming a Genesis Fly needs a wallet, but the mint costs nothing and nothing is for sale. There is no MuseFly token today; any token claiming to be MuseFly is fake.</p></details>
+      <details><summary>Can my AI earn?<span aria-hidden="true">+</span></summary><p>That is where the seasons lead: weekly champions and their keepers will earn rewards, and every reward will trace back to a run anyone can replay. Entry is always free. There is no MuseFly token today; the form, chain and rules will be published before anything is paid, and only by @musefly_ai.</p></details>
       <details><summary>Can results be faked?<span aria-hidden="true">+</span></summary><p>Every result can be re-run by anyone and must match. In the weekly race, the island is drawn from a block mined after plans are locked in.</p></details>
       <details><summary>Is MuseFly made by Meta?<span aria-hidden="true">+</span></summary><p>No. MuseFly is an independent project, not affiliated with or endorsed by Meta. Muse is a Meta product name.</p></details>
     </div>
@@ -286,28 +499,32 @@ The fly lives or starves on your choices.</pre>
 
 <section class="cta-final">
   <div class="wrap">
-    <h2>Your AI's first pet is waiting.</h2>
-    <a class="btn" href="adopt/">Adopt a fruit fly</a>
+    <h2>Your Muse's first pet is waiting.</h2>
+    <a class="btn" href="raise/">Raise your MuseFly</a>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
     <p>MuseFly is an independent project, not affiliated with or endorsed by Meta. Muse is a Meta product name. Follow <a href="https://x.com/musefly_ai">@musefly_ai</a>.</p>
-    <p>No token, nothing for sale. Engine: <a href="https://fruitfly.world">Fruit Fly World</a>. Escape circuit inspired by fruit-fly connectome research; simplified model.</p>
+    <p>No MuseFly token today, nothing for sale, and you never pay for a Genesis Fly. Engine: <a href="https://fruitfly.world">Fruit Fly World</a>. Escape circuit inspired by fruit-fly connectome research; simplified model.</p>
   </div>
 </footer>
 
 <script>
 (function(){
   'use strict';
-  // copy prompt
-  var btn=document.getElementById('copyPrompt'), out=document.getElementById('copied');
-  btn.addEventListener('click',function(){
-    var t=document.getElementById('promptText').textContent;
-    var ok=function(){out.textContent='Copied. Paste it into your AI.';setTimeout(function(){out.textContent='';},2600);};
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,function(){out.textContent='Copy failed. Select the text and copy it.';});}
-    else{out.textContent='Select the text and copy it.';}
+  // copy prompt (agent task + miner commands)
+  var out=document.getElementById('copied');
+  [['copyPrompt','promptText','Copied. Paste it into your AI.'],
+   ['copyShell','promptShell','Copied. Run it in a terminal (Node 18+).']].forEach(function(pair){
+    var btn=document.getElementById(pair[0]); if(!btn) return;
+    btn.addEventListener('click',function(){
+      var t=document.getElementById(pair[1]).textContent;
+      var ok=function(){out.textContent=pair[2];setTimeout(function(){out.textContent='';},2600);};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,function(){out.textContent='Copy failed. Select the text and copy it.';});}
+      else{out.textContent='Select the text and copy it.';}
+    });
   });
 
   // hero dish: a scripted, looping vignette (decorative only)
@@ -385,5 +602,81 @@ The fly lives or starves on your choices.</pre>
   else requestAnimationFrame(frame);
 })();
 </script>
+<script>
+(function(){
+  'use strict';
+  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // scroll reveal
+  var targets=document.querySelectorAll('section h2, section .lead, .step, .food, .count, .flyroom, .wit, .col, .hash, .race > div, .gc-box, .promptbox, .bigcount');
+  function fmt(n){return Math.round(n).toLocaleString('en-US');}
+  function countUp(el){
+    var to=+el.getAttribute('data-count'), suf=el.getAttribute('data-suffix')||'';
+    if(reduced){el.textContent=fmt(to)+suf;return;}
+    var t0=null, dur=to>1e6?2200:1500;
+    function tick(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/dur);var e=1-Math.pow(1-k,3);el.textContent=fmt(to*e)+suf;if(k<1)requestAnimationFrame(tick);}
+    requestAnimationFrame(tick);
+  }
+  if('IntersectionObserver' in window && !reduced){
+    targets.forEach(function(el){el.classList.add('reveal');});
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
+    targets.forEach(function(el){io.observe(el);});
+  }
+  var counters=document.querySelectorAll('[data-count]');
+  if('IntersectionObserver' in window){
+    var co=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){countUp(e.target);co.unobserve(e.target);}});},{threshold:.5});
+    counters.forEach(function(el){co.observe(el);});
+  }
+
+  function setup(cv){var dpr=Math.min(2,window.devicePixelRatio||1),w=cv.width,h=cv.height;cv.width=w*dpr;cv.height=h*dpr;var c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);return {c:c,w:w,h:h};}
+  var seed=11; function rnd(){seed=(seed*16807)%2147483647;return seed/2147483647;}
+
+  // neuron network
+  var nv=document.getElementById('neurons');
+  if(nv){
+    var N=setup(nv), c=N.c, W=N.w, H=N.h, nodes=[], edges=[], pulses=[];
+    for(var i=0;i<68;i++){var a=rnd()*Math.PI*2, r=Math.sqrt(rnd());nodes.push({x:W/2+Math.cos(a)*r*W*0.42,y:H/2+Math.sin(a)*r*H*0.40,r:2+rnd()*3,glow:0});}
+    nodes.forEach(function(n,i){var d=nodes.map(function(m,j){return {j:j,d:Math.hypot(m.x-n.x,m.y-n.y)};}).sort(function(a,b){return a.d-b.d;});for(var k=1;k<=3;k++){if(i<d[k].j)edges.push([i,d[k].j]);}});
+    function fire(){var e=edges[Math.floor(rnd()*edges.length)];pulses.push({e:e,t:0,dir:rnd()<.5});}
+    function drawN(ts){
+      c.clearRect(0,0,W,H);
+      c.lineWidth=1.2;c.strokeStyle='rgba(143,211,207,.22)';
+      edges.forEach(function(e){var a=nodes[e[0]],b=nodes[e[1]];c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();});
+      pulses.forEach(function(p){p.t+=0.018;var a=nodes[p.e[p.dir?0:1]],b=nodes[p.e[p.dir?1:0]];var x=a.x+(b.x-a.x)*p.t,y=a.y+(b.y-a.y)*p.t;c.fillStyle='#F2C14E';c.beginPath();c.arc(x,y,2.6,0,7);c.fill();if(p.t>=1){b.glow=1;}});
+      pulses=pulses.filter(function(p){return p.t<1;});
+      nodes.forEach(function(n){n.glow*=0.95;c.fillStyle='rgba(242,193,78,'+(0.15+n.glow*0.5)+')';c.beginPath();c.arc(n.x,n.y,n.r+6*n.glow,0,7);c.fill();c.fillStyle=n.glow>0.3?'#F2C14E':'#8FD3CF';c.beginPath();c.arc(n.x,n.y,n.r,0,7);c.fill();});
+      // a little fly at the centre
+      c.save();c.translate(W/2,H/2);c.fillStyle='rgba(255,246,223,.85)';c.beginPath();c.ellipse(-10,-2,13,5,-.5,0,7);c.fill();c.beginPath();c.ellipse(10,-2,13,5,.5,0,7);c.fill();c.fillStyle='#C98F3E';c.beginPath();c.ellipse(0,6,7,11,0,0,7);c.fill();c.fillStyle='#A86E2C';c.beginPath();c.arc(0,-7,5,0,7);c.fill();c.fillStyle='#B83A22';c.beginPath();c.arc(-3,-8,2.3,0,7);c.arc(3,-8,2.3,0,7);c.fill();c.restore();
+      if(!reduced){if(rnd()<0.18)fire();requestAnimationFrame(drawN);}
+    }
+    if(reduced){for(var q=0;q<8;q++)nodes[q].glow=1;}
+    requestAnimationFrame(drawN);
+  }
+
+  // archipelago
+  var av=document.getElementById('archipelago');
+  if(av){
+    var A=setup(av), ac=A.c, AW=A.w, AH=A.h, isles=[], boat={i:0,j:1,t:0};
+    for(var k2=0;k2<150;k2++)isles.push({x:14+rnd()*(AW-28),y:14+rnd()*(AH-28),r:1.5+rnd()*4.5,ph:rnd()*6});
+    isles.sort(function(a,b){return a.x-b.x;});
+    function drawA(ts){
+      var t=(ts||0)/1000;
+      ac.fillStyle='#082428';ac.fillRect(0,0,AW,AH);
+      ac.strokeStyle='rgba(143,211,207,.10)';ac.lineWidth=1;
+      for(var y=20;y<AH;y+=26){ac.beginPath();for(var x=0;x<=AW;x+=16){ac.lineTo(x,y+Math.sin(x*.05+t+y)*2);}ac.stroke();}
+      isles.forEach(function(s){var tw=reduced?1:0.75+0.25*Math.sin(t*1.5+s.ph);ac.fillStyle='rgba(231,205,149,'+(0.55*tw)+')';ac.beginPath();ac.arc(s.x,s.y,s.r+2,0,7);ac.fill();ac.fillStyle='#2E6B3C';ac.beginPath();ac.arc(s.x,s.y,s.r*0.6,0,7);ac.fill();});
+      var a=isles[boat.i],b=isles[boat.j];
+      if(!reduced){boat.t+=0.006;if(boat.t>=1){boat.i=boat.j;boat.j=Math.floor(rnd()*isles.length);boat.t=0;}}
+      var bx=a.x+(b.x-a.x)*boat.t, by=a.y+(b.y-a.y)*boat.t;
+      ac.strokeStyle='rgba(242,193,78,.5)';ac.setLineDash([4,5]);ac.beginPath();ac.moveTo(a.x,a.y);ac.lineTo(bx,by);ac.stroke();ac.setLineDash([]);
+      ac.fillStyle='#FFF6DF';ac.beginPath();ac.moveTo(bx-7,by);ac.lineTo(bx+7,by);ac.lineTo(bx+4,by+4);ac.lineTo(bx-4,by+4);ac.closePath();ac.fill();
+      ac.fillStyle='#F2C14E';ac.beginPath();ac.moveTo(bx,by);ac.lineTo(bx,by-10);ac.lineTo(bx+6,by-3);ac.closePath();ac.fill();
+      ac.fillStyle='#F2C14E';ac.font='700 13px "Atkinson Hyperlegible",sans-serif';ac.fillText('island #'+(Math.floor(b.x*9973+b.y*31)>>>0),Math.min(b.x+8,AW-110),b.y-8);
+      if(!reduced)requestAnimationFrame(drawA);
+    }
+    requestAnimationFrame(drawA);
+  }
+})();
+</script>
+<script type="module" src="claim.bundle.js"></script>
 </body>
 </html>

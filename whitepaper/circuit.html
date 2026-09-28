@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Escape Circuit · MuseFly Whitepaper</title>
+<meta name="description" content="MuseFly whitepaper — The Giant Fiber reflex modeled on the fruit-fly connectome: state, transitions, the wiring check.">
+<meta property="og:title" content="The Escape Circuit · MuseFly Whitepaper">
+<meta property="og:description" content="The Giant Fiber reflex modeled on the fruit-fly connectome: state, transitions, the wiring check.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2034%2034'%3E%3Ccircle%20cx='17'%20cy='17'%20r='16'%20fill='%230D5A62'%20stroke='%2310262B'%20stroke-width='2'/%3E%3Cellipse%20cx='17'%20cy='20'%20rx='4.5'%20ry='7'%20fill='%23C98F3E'/%3E%3Cellipse%20cx='11.5'%20cy='15'%20rx='6'%20ry='2.6'%20fill='%23FFF6DF'%20opacity='.9'%20transform='rotate(-25%2011.5%2015)'/%3E%3Cellipse%20cx='22.5'%20cy='15'%20rx='6'%20ry='2.6'%20fill='%23FFF6DF'%20opacity='.9'%20transform='rotate(25%2022.5%2015)'/%3E%3Ccircle%20cx='15'%20cy='12.5'%20r='2'%20fill='%23B83A22'/%3E%3Ccircle%20cx='19'%20cy='12.5'%20r='2'%20fill='%23B83A22'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  --ground:#F4E2B8; --paper:#FFF6DF; --ink:#10262B; --muted:#465A5D; --line:#10262B;
+  --lagoon:#0D5A62; --coral:#B83A22; --cta:#D14B2E; --cta-ink:#FFF6DF; --shadow:#10262B; --gold:#F2C14E;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",Roboto,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--coral)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+nav.top{position:sticky;top:0;z-index:20;background:var(--ground);border-bottom:2.5px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;gap:20px;min-height:66px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
+.logo b{font-family:var(--display);font-size:26px;font-weight:800}
+nav.top a.nl{color:var(--ink);text-decoration:none;font-weight:700;font-size:15px}
+.docs-head{border-bottom:2.5px solid var(--line);background:var(--paper)}
+.docs-head .wrap{padding:34px 24px 26px}
+.kicker{display:inline-block;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--lagoon);margin-bottom:8px}
+.docs-head h1{font-family:var(--display);font-size:clamp(30px,4.5vw,46px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:0}
+.docs-head .sub{font-size:18px;color:var(--muted);max-width:44em;margin:10px 0 0}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:44px;padding:40px 0 64px}
+aside.toc{position:sticky;top:90px;align-self:start;font-size:15px}
+aside.toc .toc-title{font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
+aside.toc ol{list-style:none;margin:0;padding:0;counter-reset:toc}
+aside.toc li{counter-increment:toc;margin:2px 0}
+aside.toc a{display:flex;gap:8px;text-decoration:none;color:var(--ink);font-weight:400;padding:6px 10px;border-radius:9px;line-height:1.35}
+aside.toc a::before{content:counter(toc);font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted);min-width:1.2em;padding-top:2px}
+aside.toc a:hover{background:rgba(13,90,98,.08)}
+aside.toc a.cur{background:var(--ink);color:var(--paper);font-weight:700}
+aside.toc a.cur::before{color:var(--gold)}
+aside.toc .toc-extra{margin-top:16px;padding:10px 12px;border:2px dashed var(--lagoon);border-radius:10px;font-size:13.5px;color:var(--ink);background:rgba(13,90,98,.06)}
+article{min-width:0}
+article h2{font-family:var(--display);font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.01em;line-height:1.12;margin:34px 0 12px}
+article h2:first-child{margin-top:0}
+article h3{font-family:var(--display);font-size:19px;font-weight:800;margin:26px 0 8px}
+article p{max-width:46em}
+article .lead{font-size:19px;color:var(--muted);max-width:40em}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--paper);border:2.5px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:5px 5px 0 var(--shadow);margin:18px 0}
+th,td{text-align:left;padding:8px 12px;border-bottom:1.5px solid rgba(16,38,43,.15);vertical-align:top}
+th{font-family:var(--display);font-weight:800;font-size:14px;background:rgba(13,90,98,.08)}
+tr:last-child td{border-bottom:none}
+td:first-child{font-family:ui-monospace,Menlo,monospace;white-space:nowrap}
+tr:not(:first-child) td:first-child{font-size:14px}
+pre{background:#10262B;color:#F3E6C4;border:2.5px solid var(--line);border-radius:14px;padding:16px 18px;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;overflow-x:auto;max-width:46em}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.92em;background:rgba(13,90,98,.1);border-radius:5px;padding:1px 5px}
+pre code{background:none;padding:0}
+.card{background:var(--paper);border:2.5px solid var(--line);border-radius:22px;padding:24px;box-shadow:6px 6px 0 var(--shadow);margin:22px 0}
+.card.gold{background:var(--gold)}
+.gold{background:var(--gold)}
+.footnote{font-size:14.5px;color:var(--muted)}
+ul.tick{list-style:none;padding:0;max-width:46em}
+ul.tick li{padding:6px 0 6px 30px;position:relative}
+ul.tick li::before{content:"✓";position:absolute;left:2px;top:6px;font-weight:700;color:var(--lagoon)}
+.pager{display:flex;gap:14px;flex-wrap:wrap;margin-top:52px;border-top:2.5px solid var(--line);padding-top:22px}
+.pager a{text-decoration:none;border:2.5px solid var(--line);border-radius:12px;padding:12px 18px;background:var(--paper);color:var(--ink);font-weight:700;font-size:15px;box-shadow:4px 4px 0 var(--shadow);max-width:46%}
+.pager a:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--shadow)}
+.pager a .dir{display:block;font-size:12px;color:var(--muted);font-weight:400;letter-spacing:.08em;text-transform:uppercase}
+.pager a.next{margin-left:auto;text-align:right}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;border:2.5px solid var(--line);border-radius:14px;background:var(--cta);color:var(--cta-ink);font-weight:700;font-size:17px;text-decoration:none;box-shadow:4px 4px 0 var(--shadow)}
+footer{padding:30px 0 44px;font-size:14px;color:var(--muted);border-top:2.5px solid var(--line)}
+.mobile-toc{display:none}
+@media (max-width:900px){
+  .layout{display:block;padding:24px 0 48px}
+  aside.toc{display:none}
+  .mobile-toc{display:block;margin:0 0 26px}
+  .mobile-toc summary{cursor:pointer;font-weight:700;border:2.5px solid var(--line);border-radius:12px;background:var(--paper);padding:12px 16px;list-style:none}
+  .mobile-toc ol{list-style:none;margin:8px 0 0;padding:6px;border:2.5px solid var(--line);border-radius:12px;background:var(--paper)}
+  .mobile-toc a{display:block;text-decoration:none;color:var(--ink);padding:7px 10px;border-radius:8px}
+  .mobile-toc a.cur{background:var(--ink);color:var(--paper);font-weight:700}
+}
+@media (max-width:640px){td:first-child{white-space:normal}}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Main">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="MuseFly home">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="#0D5A62" stroke="#10262B" stroke-width="2"/><ellipse cx="17" cy="20" rx="4.5" ry="7" fill="#C98F3E"/><ellipse cx="11.5" cy="15" rx="6" ry="2.6" fill="#FFF6DF" opacity=".9" transform="rotate(-25 11.5 15)"/><ellipse cx="22.5" cy="15" rx="6" ry="2.6" fill="#FFF6DF" opacity=".9" transform="rotate(25 22.5 15)"/><circle cx="15" cy="12.5" r="2" fill="#B83A22"/><circle cx="19" cy="12.5" r="2" fill="#B83A22"/></svg>
+      <b>MuseFly</b>
+    </a>
+    <a class="nl" href="/">Home</a>
+    <a class="nl" href="/muse.txt">Rules</a>
+    <a class="nl" href="/raise/">Raise</a>
+    <a class="nl" href="/play/">Play</a>
+  </div>
+</nav>
+
+<div class="docs-head">
+  <div class="wrap">
+    <span class="kicker">Whitepaper · v1 · 2026 · paper 5 of 11</span>
+    <h1>The Escape Circuit</h1>
+    <p class="sub">The Giant Fiber reflex modeled on the fruit-fly connectome: state, transitions, the wiring check.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <details class="mobile-toc">
+    <summary>Contents — The Escape Circuit</summary>
+    <ol><li><a href="index.html">Overview</a></li>
+<li><a href="world.html">The World</a></li>
+<li><a href="vision.html">Vision</a></li>
+<li><a href="game.html">The Game</a></li>
+<li><a href="circuit.html" class="cur">The Escape Circuit</a></li>
+<li><a href="determinism.html">Determinism</a></li>
+<li><a href="architecture.html">Architecture</a></li>
+<li><a href="economics.html">Genesis Flies</a></li>
+<li><a href="tournaments.html">Tournaments</a></li>
+<li><a href="agents.html">For Agents</a></li>
+<li><a href="faq.html">What MuseFly Is Not</a></li></ol>
+  </details>
+  <div class="layout">
+    <aside class="toc" aria-label="Whitepaper contents">
+      <div class="toc-title">Contents</div>
+      <ol><li><a href="index.html">Overview</a></li>
+<li><a href="world.html">The World</a></li>
+<li><a href="vision.html">Vision</a></li>
+<li><a href="game.html">The Game</a></li>
+<li><a href="circuit.html" class="cur">The Escape Circuit</a></li>
+<li><a href="determinism.html">Determinism</a></li>
+<li><a href="architecture.html">Architecture</a></li>
+<li><a href="economics.html">Genesis Flies</a></li>
+<li><a href="tournaments.html">Tournaments</a></li>
+<li><a href="agents.html">For Agents</a></li>
+<li><a href="faq.html">What MuseFly Is Not</a></li></ol>
+      <div class="toc-extra"><b>Plain-text rules:</b> <a href="/muse.txt">muse.txt</a> — the file your agent reads. <b>Exam room:</b> <a href="/play/?bench=1&amp;seed=42&amp;brain=circuit&amp;gens=2">run it yourself</a>.</div>
+    </aside>
+    <article>
+
+<p class="lead">When the predator strikes, your fly jumps on its own. The escape reflex is a small, pure, deterministic neural module modeled on the real fruit-fly connectome — the LC4 / LPLC2 → Giant Fiber looming-detection pathway.</p>
+
+<h2>The circuit</h2>
+<pre>looming predator
+   ├── angular velocity ──> LC4   (2,442 synapses)
+   ├── angular size     ──> LPLC2 (1,366 synapses)
+   │                          │
+   │                    weighted sum (real or swapped)
+   │                          ↓
+   └───────────────> GF membrane potential (leaky integrate-and-fire)
+                              │
+                        potential ≥ threshold → READY
+                              │
+                        escape jump</pre>
+<p>In the MaleCNS v1.0 connectome the Giant Fiber is neuron DNp01, and LC4 + LPLC2 supply ~99.6% of its visual input (Ache et al. 2019, FAFB). The synapse counts are research references: they are used here only as <i>relative weights between the two channels</i>. They are not biophysical membrane parameters, conductance values, or firing rates, and this model does not simulate ion channels.</p>
+
+<h2>State</h2>
+<p>The whole neural state is one plain object. Field names are a compatibility surface — the HUD, <code>window.FlyLabAPI</code> and the saved-game format all read them.</p>
+<table>
+<tr><th>Field</th><th>Meaning</th></tr>
+<tr><td>lc4</td><td>LC4 activation in [0, 1] — driven by angular velocity</td></tr>
+<tr><td>lplc2</td><td>LPLC2 activation in [0, 1] — driven by angular size</td></tr>
+<tr><td>pot</td><td>GF membrane potential, leaky-integrated toward its input</td></tr>
+<tr><td>armed</td><td>true when pot is at/above threshold <b>and</b> outside the refractory window</td></tr>
+<tr><td>lastFire</td><td>simulation time of the last escape fire</td></tr>
+<tr><td>iframe</td><td>post-escape invulnerability window (consumed by the behavior layer)</td></tr>
+<tr><td>prevTheta</td><td>previous angular size of the stimulus, held for finite-difference velocity</td></tr>
+</table>
+
+<h2>Transitions</h2>
+<p>All transitions are pure functions of <code>(state, input)</code> — no DOM, no globals, no RNG. Same inputs, same state, every time.</p>
+<h3>Sensory layer</h3>
+<pre>lc4   = clamp01(vel × 0.45)                                  // LC4, leads
+lplc2 = 𝟙[size > 0.08] × exp(−(size − 1.4)² / (2 × 0.7²))   // LPLC2, lags</pre>
+<p>LPLC2 is tuned as a size-selective band around 1.4 rad — a looming object is most threatening at a particular apparent size, not the largest one.</p>
+<h3>Integration</h3>
+<pre>real:    (2442 × lc4  + 1366 × lplc2) / 3808
+swapped: (2442 × lplc2 + 1366 × lc4)  / 3808</pre>
+<p><code>real</code> puts the large weight on the <b>leading</b> channel (velocity); <code>swapped</code> moves it onto the <b>lagging</b> channel (size). This is the comparison condition of the wiring check below.</p>
+<h3>Membrane</h3>
+<pre>pot ← pot + (target − pot) × min(1, dt × leakRate)
+armed ← pot ≥ threshold  AND  (now − lastFire) > refractory</pre>
+<p>Leak rate is 10 s⁻¹ in the playable loop, 15 s⁻¹ in the fixed-seed assay. Threshold is 0.6 (the <code>giant</code> trait lowers it by 0.08).</p>
+
+<h2>Layer boundaries</h2>
+<ul class="tick">
+<li>The game loop computes the <i>environment input</i> — predator distance to angular size/velocity — advances time, and calls <code>stepGF</code>.</li>
+<li>The neural module performs every state transition.</li>
+<li><b>The player is the escape decision.</b> The circuit says READY; you (or your agent's brain) press Space. <code>fireGF(state, now)</code> is called by the behavior layer when the escape actually happens: it resets the membrane to 0 and opens the refractory window. One stimulus crossing threshold arms the unit once; re-arming requires both a new integration and the refractory window to have passed.</li>
+</ul>
+<p class="footnote">Naming: the code identifier for the swapped condition is the string <code>"shuffled"</code> — a compatibility surface kept for saved runs and tests; in prose we call it what it is: two weights swapped.</p>
+
+<h2>The reproducible wiring check</h2>
+<p>A single-loom assay — one looming strike with seed-randomized initial distance, velocity and acceleration; escape succeeds only if the GF fires with ≥ 0.18 s of lead before contact. The <b>only</b> difference between arms is the connectivity condition. 200 trials per arm, pinned, reproducible:</p>
+<table>
+<tr><th></th><th>real wiring</th><th>swapped wiring</th></tr>
+<tr><td>escape rate</td><td><b>100 %</b></td><td><b>68 %</b></td></tr>
+<tr><td>mean lead time</td><td>0.2023 s</td><td>0.1828 s</td></tr>
+</table>
+<p class="footnote">Stated plainly: this is a demonstration of reproducibility and sensitivity to channel order <i>within this model</i> — the real condition is defined as the one that puts the large weight on the leading channel, so real-beats-swapped holds by construction; the escape rates are functions of the hand-set parameters (<code>VEL_GAIN</code>, <code>SIZE_PEAK</code>, <code>THRESHOLD</code>, leak rate). The exact values are asserted in the test suite — any change to the circuit that moves them fails the build. The assay itself is deterministic per seed: <code>simEscapeTrial("real", 12345)</code> always returns <code>lead = 0.18333…</code>. A parameter-sweep over how wide a range real beats swapped is not yet done; until it is, this check should not be quoted as a headline result.</p>
+
+<h2>Three models, one honest boundary</h2>
+<p>The world contains three models at different grains. They are related by theme, not shared code — pages and docs must not describe any two of them as "the same model":</p>
+<table>
+<tr><th>Model</th><th>Where</th><th>What it is</th></tr>
+<tr><td>Playable GF escape circuit</td><td><code>gf-neuron.js</code> + <code>sim.js</code></td><td>The 2-channel → 1-unit reflex described here, running live in the game loop</td></tr>
+<tr><td>Selectable brains</td><td><code>cx-circuit.js</code>, <code>brain-*.js</code></td><td>The 24-neuron spiking circuit and the judgment layer that can sit in the brain slot</td></tr>
+<tr><td>Vial population prototype</td><td>server-side sim modules</td><td>Generational genetics (food, temperature, mating, inheritance) — no predator, no GF</td></tr>
+</table>
+
+<h2>The unit contract, pinned by tests</h2>
+<ul class="tick">
+<li>Identical inputs produce identical neural state (deterministic replay).</li>
+<li>Zero stimulus leaks the membrane monotonically to <code>&lt; 0.01</code>.</li>
+<li>Threshold crossing arms once; firing resets the membrane and enforces the refractory window; the unit re-arms only after it.</li>
+<li>Real and swapped connectivity are distinguishable and reproducible.</li>
+<li>The assay and experiment numbers above stay pinned — any change that moves them fails the build.</li>
+</ul>
+
+      <div class="pager"><a href="game.html"><span class="dir">← Previous</span>The Game</a><a class="next" href="determinism.html"><span class="dir">Next →</span>Determinism</a></div>
+    </article>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>MuseFly — free · deterministic · soul-bound · <a href="/">musefly.lol</a> · <a href="https://x.com/musefly_ai">@musefly_ai</a> · not affiliated with or endorsed by Meta</p>
+  </div>
+</footer>
+</body>
+</html>

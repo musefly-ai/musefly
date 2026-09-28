@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Adopt a fly · MuseFly</title>
-<meta name="description" content="Name your fruit fly, paste your AI's survival plan, pick an island — then it lives or starves on your AI's judgment.">
-<meta property="og:title" content="Adopt a fly · MuseFly">
-<meta property="og:description" content="Name your fly. Paste your AI's plan. It lives or starves.">
+<title>Mint your Genesis Fly — free · MuseFly</title>
+<meta name="description" content="Earned by playing: survive a generation, then mint your Genesis Fly on-chain. Free, soul-bound, one per wallet. Nothing is for sale.">
+<meta property="og:title" content="Mint your Genesis Fly — free · MuseFly">
+<meta property="og:description" content="You raised it. Now it lives on-chain — free, soul-bound, one per wallet.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2034%2034'%3E%3Ccircle%20cx='17'%20cy='17'%20r='16'%20fill='%230D5A62'%20stroke='%2310262B'%20stroke-width='2'/%3E%3Cellipse%20cx='17'%20cy='20'%20rx='4.5'%20ry='7'%20fill='%23C98F3E'/%3E%3Cellipse%20cx='11.5'%20cy='15'%20rx='6'%20ry='2.6'%20fill='%23FFF6DF'%20opacity='.9'%20transform='rotate(-25%2011.5%2015)'/%3E%3Cellipse%20cx='22.5'%20cy='15'%20rx='6'%20ry='2.6'%20fill='%23FFF6DF'%20opacity='.9'%20transform='rotate(25%2022.5%2015)'/%3E%3Ccircle%20cx='15'%20cy='12.5'%20r='2'%20fill='%23B83A22'/%3E%3Ccircle%20cx='19'%20cy='12.5'%20r='2'%20fill='%23B83A22'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,38 +28,41 @@ nav .wrap{display:flex;align-items:center;gap:20px;min-height:66px;flex-wrap:wra
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
 .logo b{font-family:var(--display);font-size:26px;font-weight:800}
 nav a.nl{color:var(--ink);text-decoration:none;font-weight:700;font-size:15px}
-h1{font-family:var(--display);font-size:clamp(38px,6vw,64px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:0}
-.lead{font-size:19px;color:var(--muted);max-width:34em}
-section{padding:56px 0}
+h1{font-family:var(--display);font-size:clamp(34px,5.5vw,56px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:0}
+.lead{font-size:19px;color:var(--muted);max-width:36em}
+section{padding:52px 0}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;border:2.5px solid var(--line);border-radius:14px;background:var(--cta);color:var(--cta-ink);font-weight:700;font-size:17px;text-decoration:none;cursor:pointer;box-shadow:4px 4px 0 var(--shadow);transition:transform .12s ease,box-shadow .12s ease;font-family:var(--body)}
 .btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--shadow)}
 .btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
 .btn.ghost{background:var(--paper);color:var(--ink)}
-.field{margin-top:26px}
-.field label{display:block;font-weight:700;margin-bottom:8px}
-.field input,.field textarea{width:100%;border:2.5px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);font:16px/1.5 var(--body);padding:12px 14px}
-.field textarea{min-height:96px;resize:vertical}
-.field input:focus,.field textarea:focus{outline:3px solid var(--lagoon);outline-offset:2px}
-.hint{font-size:14px;color:var(--muted);margin-top:6px}
-#planOk{font-weight:700;min-height:1.4em;margin-top:6px;font-size:14px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media (max-width:640px){.row2{grid-template-columns:1fr}}
-#chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.chip{border:2px solid var(--line);border-radius:9px;padding:3px 10px;font-size:13.5px;font-weight:700;background:var(--paper)}
-.chip.bad{border-color:var(--coral);color:var(--coral);text-decoration:line-through}
 .card{background:var(--paper);border:2.5px solid var(--line);border-radius:22px;padding:26px;box-shadow:6px 6px 0 var(--shadow);margin-top:34px}
 .card h2{font-family:var(--display);font-size:24px;font-weight:800;margin:0 0 6px}
-details{border-bottom:2.5px solid var(--line)}
-summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:56px;font-weight:700;font-size:18px}
-summary::-webkit-details-marker{display:none}
-summary span{font-size:24px}
-table{border-collapse:collapse;width:100%;font-size:14.5px}
-th,td{text-align:left;padding:7px 10px;border-bottom:1.5px solid rgba(16,38,43,.18);vertical-align:top}
-td:first-child{font-family:ui-monospace,Menlo,monospace;white-space:nowrap}
-#shareWrap{display:none}
-#shareCard{width:100%;height:auto;border:2.5px solid var(--line);border-radius:18px;box-shadow:6px 6px 0 var(--shadow);display:block}
 .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
-.copied{font-weight:700;color:var(--coral);min-height:1.6em;margin-top:10px}
+/* genesis claim form (ids shared with claim.bundle.js) */
+.gc-steps{margin:0 0 18px;padding-left:22px;color:var(--muted);font-size:16px;line-height:1.7}
+.gc-steps li{margin:4px 0}
+.gc-engage{margin:0 0 18px;padding:10px 14px;border:2px dashed var(--lagoon);border-radius:10px;font-size:15px;color:var(--ink);background:rgba(13,90,98,.06)}
+.gc-agent{margin:0 0 14px;padding:10px 14px;border:2px dashed var(--cta);border-radius:10px;font-size:15px;color:var(--ink);background:rgba(209,75,46,.06)}
+.gc-form{display:grid;gap:14px}
+.gc-run{border:2px solid var(--line);border-radius:10px;background:var(--ground)}
+.gc-run summary{cursor:pointer;padding:10px 14px;font-weight:700;font-size:15px}
+.gc-run[open] summary{border-bottom:2px solid var(--line)}
+.gc-run .gc-label{padding:12px 14px 0}
+.gc-run .gc-hint{display:block;padding:0 14px 12px}
+.gc-label{display:grid;gap:6px;font-weight:700;font-size:15px}
+.gc-label input,.gc-label textarea{font:inherit;font-weight:400;padding:10px 12px;border:2px solid var(--line);border-radius:10px;background:var(--ground);color:var(--ink);width:100%}
+.gc-label textarea{resize:vertical}
+.gc-hint{font-weight:400;font-size:13px;color:var(--muted)}
+.gc-check{display:flex;align-items:center;gap:9px;font-size:15px;color:var(--muted);font-weight:400}
+.gc-check input{width:17px;height:17px;accent-color:var(--lagoon)}
+#gcClaim{justify-self:start}
+.gc-postbtns{display:flex;flex-wrap:wrap;gap:12px}
+.gc-status{min-height:24px;font-size:15px;color:var(--muted);overflow-wrap:anywhere}
+.gc-status.ok{color:var(--ink);font-weight:700}
+.gc-status.err{color:var(--coral);font-weight:700}
+.gc-tick{font-variant-numeric:tabular-nums;opacity:.7}
+.gc-warn{margin:14px 0 0;font-size:14px;color:var(--muted)}
+#gcLock p{max-width:38em}
 footer{padding:30px 0 44px;font-size:14px;color:var(--muted)}
 </style>
 </head>
@@ -71,64 +74,53 @@ footer{padding:30px 0 44px;font-size:14px;color:var(--muted)}
       <b>MuseFly</b>
     </a>
     <a class="nl" href="/#how">How it works</a>
-    <a class="nl" href="/muse.txt">Rules</a>
+    <a class="nl" href="/raise/">Raise</a>
     <a class="nl" href="/play/">Play</a>
+    <a class="nl" href="/whitepaper/">Docs</a>
   </div>
 </nav>
 
 <header>
   <div class="wrap">
-    <h1>Adopt a fruit fly.</h1>
-    <p class="lead">Name it, paste your AI's survival plan, pick an island. The fly runs the plan — and lives or starves on it.</p>
+    <h1>Mint your Genesis Fly — free.</h1>
+    <p class="lead">You raised it. Now it lives on-chain — free, soul-bound, one per wallet. Nothing is for sale.</p>
   </div>
 </header>
 
 <section>
   <div class="wrap">
-    <div class="field">
-      <label for="flyName">1 · Name your fly</label>
-      <input id="flyName" maxlength="16" placeholder="e.g. Zipper" autocomplete="off">
-      <p class="hint">Up to 16 characters. It goes on the share card.</p>
-    </div>
-
-    <div class="field">
-      <label for="plan">2 · Paste your AI's plan</label>
-      <textarea id="plan" placeholder="thrift, forager, hardy, nocturnal, shaker" spellcheck="false"></textarea>
-      <div id="planOk"></div>
-      <div id="chips"></div>
-      <p class="hint">Comma-separated mutation ids, best first — exactly the line your AI replied with.
-        Don't have one yet? <a href="/#prompt">Copy the prompt</a> and ask your AI first.</p>
-    </div>
-
-    <div class="field">
-      <label for="island">3 · Island number</label>
-      <div class="row2">
-        <input id="island" inputmode="numeric" placeholder="42">
-        <button class="btn ghost" type="button" id="rndIsland">Surprise me</button>
+    <div id="gcFormBox" class="card">
+      <h2>Three inputs, one click</h2>
+      <ol class="gc-steps">
+        <li>Island + plan are pre-filled from your run or your link — paste your AI's plan line if they aren't.</li>
+        <li>Publish one post on X — machine-verified. The mint button hands you the text with your personal code.</li>
+        <li>Connect a wallet and mint free on-chain. The server re-runs your lineage with the same engine and checks every byte. Match — and the fly is yours, free.</li>
+      </ol>
+      <p class="gc-agent">🤖 <b>Let an AI agent do it?</b> Don't fill this form — grab the <a href="/#prompt">copy-paste prompt</a> and it plays and mints from the terminal.</p>
+      <p class="gc-engage">📣 <b>One post on X, machine-checked.</b> Hit <b>“Post on X — pre-filled”</b>: it connects your wallet, builds the post with your personal code, and opens X with it already typed in. Publish, come back, and mint. Follow <a href="https://x.com/musefly_ai" target="_blank" rel="noreferrer">@musefly_ai</a> too (also checked).</p>
+      <div class="gc-form">
+        <details class="gc-run">
+          <summary>Island + plan — auto-filled, or paste your AI's plan line. <span class="gc-hint">Tap to edit.</span></summary>
+          <label class="gc-label">Island number
+            <input id="gcSeed" type="number" min="1" inputmode="numeric" placeholder="42" />
+          </label>
+          <label class="gc-label">Your fly's mutations (ids, best first)
+            <input id="gcPlan" type="text" placeholder="forager, fecund, nocturnal, …" autocomplete="off" />
+            <span class="gc-hint">Auto-filled. Order matters — it's what the server replays.</span>
+          </label>
+        </details>
+        <label class="gc-label">Your X post link or @handle
+          <input id="gcX" type="text" placeholder="https://x.com/you/status/… or @you" autocomplete="off" />
+          <span class="gc-hint">After you post, paste the link — or just your handle — and hit “Mint my free NFT”.</span>
+        </label>
+        <div class="gc-postbtns">
+          <button class="btn mintCta2" type="button" id="gcPost">1 · Post on X — pre-filled →</button>
+          <button class="btn" type="button" id="gcClaim">2 · Mint my free NFT →</button>
+        </div>
+        <div id="gcStatus" class="gc-status" role="status" aria-live="polite"></div>
       </div>
-      <p class="hint">Same island + same plan = same result, every time. Share the number and anyone can re-run your fly's life.</p>
+      <p class="gc-warn"><b>You never pay for a Genesis Fly.</b> The only contract is on Robinhood Chain and any address besides the one pinned by <a href="https://x.com/musefly_ai">@musefly_ai</a> is a fake. There is no MuseFly token today.</p>
     </div>
-
-    <div class="actions" style="margin-top:34px">
-      <button class="btn" type="button" id="raise">Raise it →</button>
-      <button class="btn ghost" type="button" id="makeCard">Make the share card</button>
-    </div>
-
-    <div id="shareWrap" class="card">
-      <h2 id="cardTitle">Your adoption card</h2>
-      <canvas id="shareCard" width="1200" height="630" role="img" aria-label="MuseFly adoption card"></canvas>
-      <div class="actions">
-        <button class="btn" type="button" id="dlCard">Download PNG</button>
-        <button class="btn ghost" type="button" id="copyPost">Copy post text</button>
-        <button class="btn ghost" type="button" id="raise2">Raise it →</button>
-      </div>
-      <div class="copied" id="copied" role="status"></div>
-    </div>
-
-    <details style="margin-top:40px">
-      <summary>The 24 mutations (what your AI is ranking)<span>+</span></summary>
-      <table id="traitTable"><thead><tr><th>id</th><th>gain</th><th>cost</th></tr></thead><tbody></tbody></table>
-    </details>
   </div>
 </section>
 
@@ -138,134 +130,6 @@ footer{padding:30px 0 44px;font-size:14px;color:var(--muted)}
   </div>
 </footer>
 
-<script>
-(function(){
-"use strict";
-// ids pinned to sim.js TRAIT_INFO / muse.txt — keep all three in step
-var TRAITS=[
-["white","sense +25%","night sense penalty ×2"],
-["curly","speed +18%","metabolism +15%"],
-["ebony","predator damage −30%","sense −12%"],
-["fecund","egg cost −22%","post-lay odor 2 s"],
-["swift","dash cooldown −30%","dash cost +40%"],
-["hardy","metabolism −16%","speed −8%"],
-["nocturnal","no night sense penalty","—"],
-["shaker","+40% speed 1.5 s after escape","—"],
-["forager","food energy +35%","−18% speed 1 s after eating"],
-["thrift","rot no longer exposes you","—"],
-["tiger","bite stuns predator 8 s","—"],
-["giant","energy cap +60, GF easier","speed −15%"],
-["sitter","food respawns in place, +25%","speed −10%"],
-["rover","speed +10%, food sense +20%","metabolism +12%"],
-["diapause","low energy: metabolism −60%, less hunted","speed −40%, no jump"],
-["adh","rot no odor + drunk sprint","sluggish turning while drunk"],
-["phototax","metabolism −30% in light","drawn to lights at night"],
-["pheromone","sense the wild type laying","your lays broadcast too"],
-["clock","day metabolism −20%","night metabolism +20%, sense −10%"],
-["vestigial","energy cap +60, metabolism −10%","GF jump −40%"],
-["mimic","still & slow = predator loses you (day)","energy still drains"],
-["hopper","full-quality jump any moment","cost ×1.5, cooldown +50%"],
-["cannibal","drain 2 energy/s near wild type","you smell while feeding"],
-["guard","near eggs, predator targets wild type","passing predator can eat your eggs"]
-];
-var VALID={}; TRAITS.forEach(function(t){VALID[t[0]]=t;});
-var $=function(id){return document.getElementById(id);};
-var tb=document.querySelector("#traitTable tbody");
-TRAITS.forEach(function(t){var tr=document.createElement("tr");
-  tr.innerHTML="<td>"+t[0]+"</td><td>"+t[1]+"</td><td>"+t[2]+"</td>"; tb.appendChild(tr);});
-
-function parsePlan(){
-  var raw=$("plan").value.toLowerCase();
-  var parts=raw.split(/[\s,]+/).filter(Boolean), good=[], bad=[];
-  parts.forEach(function(p){ if(VALID[p]){ if(good.indexOf(p)<0) good.push(p); } else bad.push(p); });
-  return {good:good,bad:bad};
-}
-function renderChips(){
-  var p=parsePlan(), chips=$("chips"); chips.innerHTML="";
-  p.good.forEach(function(id){var c=document.createElement("span");c.className="chip";c.textContent=id;chips.appendChild(c);});
-  p.bad.forEach(function(id){var c=document.createElement("span");c.className="chip bad";c.textContent=id;chips.appendChild(c);});
-  $("planOk").textContent = p.good.length
-    ? (p.bad.length ? ("✓ "+p.good.length+" valid · unknown: "+p.bad.join(", ")) : ("✓ "+p.good.length+" mutation"+(p.good.length>1?"s":"")+" in order"))
-    : (p.bad.length ? ("Unknown ids: "+p.bad.join(", ")) : "");
-  $("planOk").style.color = p.good.length ? "#0D5A62" : "#B83A22";
-  return p;
-}
-$("plan").addEventListener("input",renderChips);
-$("rndIsland").addEventListener("click",function(){ $("island").value=String(Math.floor(Math.random()*99999)+1); });
-if(!$("island").value) $("island").value="42";
-
-function state(){
-  var p=parsePlan();
-  return {
-    name:$("flyName").value.trim()||"Nameless",
-    plan:p.good,
-    seed:Math.max(1,parseInt($("island").value,10)||42)
-  };
-}
-function raise(){
-  var s=state();
-  if(!s.plan.length){ $("planOk").textContent="Paste your AI's plan first (or a few ids of your own)."; $("planOk").style.color="#B83A22"; $("plan").focus(); return; }
-  location.href="/play/?seed="+s.seed+"&plan="+s.plan.join(",");
-}
-$("raise").addEventListener("click",raise);
-$("raise2").addEventListener("click",raise);
-
-function drawCard(){
-  var s=state();
-  var cv=$("shareCard"),ctx=cv.getContext("2d"),W=1200,H=630;
-  ctx.fillStyle="#0D5A62";ctx.fillRect(0,0,W,H);
-  ctx.fillStyle="#1C7C84";ctx.beginPath();ctx.arc(960,340,250,0,7);ctx.fill();
-  ctx.fillStyle="#E7CD95";ctx.beginPath();ctx.arc(960,340,212,0,7);ctx.fill();
-  ctx.fillStyle="#17331F";ctx.beginPath();ctx.arc(960,340,190,0,7);ctx.fill();
-  ctx.fillStyle="rgba(46,107,60,.5)";
-  for(var k=0;k<26;k++){var a=k*2.399,r=190*Math.sqrt((k+.5)/26)*.92;
-    ctx.beginPath();ctx.arc(960+Math.cos(a)*r,340+Math.sin(a)*r,4+(k%4),0,7);ctx.fill();}
-  ctx.fillStyle="#7ED957";
-  [[880,300],[1010,270],[940,410],[1030,380],[870,390]].forEach(function(p){
-    ctx.beginPath();ctx.arc(p[0],p[1],7,0,7);ctx.arc(p[0]+11,p[1]-4,6,0,7);ctx.arc(p[0]+4,p[1]+10,6,0,7);ctx.fill();});
-  // the fly (facing left), amber body, cream wings, red eyes
-  ctx.save();ctx.translate(950,340);ctx.rotate(-.4);
-  ctx.fillStyle="rgba(255,246,223,.85)";
-  ctx.save();ctx.rotate(-.55);ctx.beginPath();ctx.ellipse(-10,4,20,7,0,0,7);ctx.fill();ctx.restore();
-  ctx.save();ctx.rotate(.55);ctx.beginPath();ctx.ellipse(10,4,20,7,0,0,7);ctx.fill();ctx.restore();
-  ctx.fillStyle="#C98F3E";ctx.beginPath();ctx.ellipse(0,12,12,17,0,0,7);ctx.fill();
-  ctx.fillStyle="#A86E2C";ctx.beginPath();ctx.arc(0,-4,7,0,7);ctx.fill();
-  ctx.fillStyle="#B83A22";ctx.beginPath();ctx.arc(-3.5,-7,3.4,0,7);ctx.arc(3.5,-7,3.4,0,7);ctx.fill();
-  ctx.restore();
-  // text side
-  ctx.fillStyle="#FFF6DF";ctx.font="800 66px 'Bricolage Grotesque','Avenir Next',sans-serif";
-  ctx.fillText("Adopting:",70,120);
-  ctx.font="800 96px 'Bricolage Grotesque','Avenir Next',sans-serif";
-  ctx.fillStyle="#F4E2B8";ctx.fillText(s.name,70,225);
-  ctx.font="700 30px 'Atkinson Hyperlegible',sans-serif";ctx.fillStyle="#D8ECE8";
-  ctx.fillText("island #"+s.seed+" · plan (best first):",70,290);
-  ctx.font="700 34px ui-monospace,Menlo,monospace";ctx.fillStyle="#F2C14E";
-  var shown=s.plan.slice(0,5).join(", ")+(s.plan.length>5?", +"+(s.plan.length-5):"");
-  if(!s.plan.length){shown="(no plan yet)";ctx.fillStyle="#FF8A6E";}
-  ctx.fillText(shown,70,340);
-  ctx.font="400 24px 'Atkinson Hyperlegible',sans-serif";ctx.fillStyle="#A9D3CE";
-  ctx.fillText("It lives or starves on this plan.",70,410);
-  ctx.font="800 40px 'Bricolage Grotesque','Avenir Next',sans-serif";ctx.fillStyle="#FFF6DF";
-  ctx.fillText("musefly.lol",70,540);
-  ctx.font="700 26px 'Atkinson Hyperlegible',sans-serif";ctx.fillStyle="#A9D3CE";
-  ctx.fillText("@musefly_ai · free · deterministic · not affiliated with Meta",70,585);
-  $("shareWrap").style.display="block";
-  $("cardTitle").textContent=s.name+"'s adoption card";
-  $("shareWrap").scrollIntoView({behavior:"smooth",block:"nearest"});
-}
-$("makeCard").addEventListener("click",drawCard);
-$("dlCard").addEventListener("click",function(){
-  var a=document.createElement("a");
-  a.download="musefly-"+(state().name.toLowerCase().replace(/[^a-z0-9]+/g,"-")||"fly")+".png";
-  a.href=$("shareCard").toDataURL("image/png");a.click();
-});
-$("copyPost").addEventListener("click",function(){
-  var s=state(),ok=function(){$("copied").textContent="Copied. Paste it on X.";setTimeout(function(){$("copied").textContent="";},2600);};
-  var t="I adopted a fruit fly for my AI.\n\n"+s.name+" · island #"+s.seed+"\nPlan (best first): "+(s.plan.join(", ")||"—")+"\nSame island, same plan, same result — anyone can re-run its life.\nmusefly.lol\n\n#Muse #MuseFly #AIagents";
-  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok,function(){$("copied").textContent="Copy blocked — select and copy manually.";});
-});
-renderChips();
-})();
-</script>
+<script type="module" src="/claim.bundle.js"></script>
 </body>
 </html>

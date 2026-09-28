@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Genesis Flies · MuseFly Whitepaper</title>
+<meta name="description" content="MuseFly whitepaper — The unit is an identity, not a token: free, soul-bound, one per wallet, 4,444 hard-capped.">
+<meta property="og:title" content="Genesis Flies · MuseFly Whitepaper">
+<meta property="og:description" content="The unit is an identity, not a token: free, soul-bound, one per wallet, 4,444 hard-capped.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2034%2034'%3E%3Ccircle%20cx='17'%20cy='17'%20r='16'%20fill='%230D5A62'%20stroke='%2310262B'%20stroke-width='2'/%3E%3Cellipse%20cx='17'%20cy='20'%20rx='4.5'%20ry='7'%20fill='%23C98F3E'/%3E%3Cellipse%20cx='11.5'%20cy='15'%20rx='6'%20ry='2.6'%20fill='%23FFF6DF'%20opacity='.9'%20transform='rotate(-25%2011.5%2015)'/%3E%3Cellipse%20cx='22.5'%20cy='15'%20rx='6'%20ry='2.6'%20fill='%23FFF6DF'%20opacity='.9'%20transform='rotate(25%2022.5%2015)'/%3E%3Ccircle%20cx='15'%20cy='12.5'%20r='2'%20fill='%23B83A22'/%3E%3Ccircle%20cx='19'%20cy='12.5'%20r='2'%20fill='%23B83A22'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  --ground:#F4E2B8; --paper:#FFF6DF; --ink:#10262B; --muted:#465A5D; --line:#10262B;
+  --lagoon:#0D5A62; --coral:#B83A22; --cta:#D14B2E; --cta-ink:#FFF6DF; --shadow:#10262B; --gold:#F2C14E;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",Roboto,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--coral)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+nav.top{position:sticky;top:0;z-index:20;background:var(--ground);border-bottom:2.5px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;gap:20px;min-height:66px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
+.logo b{font-family:var(--display);font-size:26px;font-weight:800}
+nav.top a.nl{color:var(--ink);text-decoration:none;font-weight:700;font-size:15px}
+.docs-head{border-bottom:2.5px solid var(--line);background:var(--paper)}
+.docs-head .wrap{padding:34px 24px 26px}
+.kicker{display:inline-block;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--lagoon);margin-bottom:8px}
+.docs-head h1{font-family:var(--display);font-size:clamp(30px,4.5vw,46px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:0}
+.docs-head .sub{font-size:18px;color:var(--muted);max-width:44em;margin:10px 0 0}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:44px;padding:40px 0 64px}
+aside.toc{position:sticky;top:90px;align-self:start;font-size:15px}
+aside.toc .toc-title{font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
+aside.toc ol{list-style:none;margin:0;padding:0;counter-reset:toc}
+aside.toc li{counter-increment:toc;margin:2px 0}
+aside.toc a{display:flex;gap:8px;text-decoration:none;color:var(--ink);font-weight:400;padding:6px 10px;border-radius:9px;line-height:1.35}
+aside.toc a::before{content:counter(toc);font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted);min-width:1.2em;padding-top:2px}
+aside.toc a:hover{background:rgba(13,90,98,.08)}
+aside.toc a.cur{background:var(--ink);color:var(--paper);font-weight:700}
+aside.toc a.cur::before{color:var(--gold)}
+aside.toc .toc-extra{margin-top:16px;padding:10px 12px;border:2px dashed var(--lagoon);border-radius:10px;font-size:13.5px;color:var(--ink);background:rgba(13,90,98,.06)}
+article{min-width:0}
+article h2{font-family:var(--display);font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.01em;line-height:1.12;margin:34px 0 12px}
+article h2:first-child{margin-top:0}
+article h3{font-family:var(--display);font-size:19px;font-weight:800;margin:26px 0 8px}
+article p{max-width:46em}
+article .lead{font-size:19px;color:var(--muted);max-width:40em}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--paper);border:2.5px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:5px 5px 0 var(--shadow);margin:18px 0}
+th,td{text-align:left;padding:8px 12px;border-bottom:1.5px solid rgba(16,38,43,.15);vertical-align:top}
+th{font-family:var(--display);font-weight:800;font-size:14px;background:rgba(13,90,98,.08)}
+tr:last-child td{border-bottom:none}
+td:first-child{font-family:ui-monospace,Menlo,monospace;white-space:nowrap}
+tr:not(:first-child) td:first-child{font-size:14px}
+pre{background:#10262B;color:#F3E6C4;border:2.5px solid var(--line);border-radius:14px;padding:16px 18px;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;overflow-x:auto;max-width:46em}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.92em;background:rgba(13,90,98,.1);border-radius:5px;padding:1px 5px}
+pre code{background:none;padding:0}
+.card{background:var(--paper);border:2.5px solid var(--line);border-radius:22px;padding:24px;box-shadow:6px 6px 0 var(--shadow);margin:22px 0}
+.card.gold{background:var(--gold)}
+.gold{background:var(--gold)}
+.footnote{font-size:14.5px;color:var(--muted)}
+ul.tick{list-style:none;padding:0;max-width:46em}
+ul.tick li{padding:6px 0 6px 30px;position:relative}
+ul.tick li::before{content:"✓";position:absolute;left:2px;top:6px;font-weight:700;color:var(--lagoon)}
+.pager{display:flex;gap:14px;flex-wrap:wrap;margin-top:52px;border-top:2.5px solid var(--line);padding-top:22px}
+.pager a{text-decoration:none;border:2.5px solid var(--line);border-radius:12px;padding:12px 18px;background:var(--paper);color:var(--ink);font-weight:700;font-size:15px;box-shadow:4px 4px 0 var(--shadow);max-width:46%}
+.pager a:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--shadow)}
+.pager a .dir{display:block;font-size:12px;color:var(--muted);font-weight:400;letter-spacing:.08em;text-transform:uppercase}
+.pager a.next{margin-left:auto;text-align:right}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;border:2.5px solid var(--line);border-radius:14px;background:var(--cta);color:var(--cta-ink);font-weight:700;font-size:17px;text-decoration:none;box-shadow:4px 4px 0 var(--shadow)}
+footer{padding:30px 0 44px;font-size:14px;color:var(--muted);border-top:2.5px solid var(--line)}
+.mobile-toc{display:none}
+@media (max-width:900px){
+  .layout{display:block;padding:24px 0 48px}
+  aside.toc{display:none}
+  .mobile-toc{display:block;margin:0 0 26px}
+  .mobile-toc summary{cursor:pointer;font-weight:700;border:2.5px solid var(--line);border-radius:12px;background:var(--paper);padding:12px 16px;list-style:none}
+  .mobile-toc ol{list-style:none;margin:8px 0 0;padding:6px;border:2.5px solid var(--line);border-radius:12px;background:var(--paper)}
+  .mobile-toc a{display:block;text-decoration:none;color:var(--ink);padding:7px 10px;border-radius:8px}
+  .mobile-toc a.cur{background:var(--ink);color:var(--paper);font-weight:700}
+}
+@media (max-width:640px){td:first-child{white-space:normal}}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Main">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="MuseFly home">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="#0D5A62" stroke="#10262B" stroke-width="2"/><ellipse cx="17" cy="20" rx="4.5" ry="7" fill="#C98F3E"/><ellipse cx="11.5" cy="15" rx="6" ry="2.6" fill="#FFF6DF" opacity=".9" transform="rotate(-25 11.5 15)"/><ellipse cx="22.5" cy="15" rx="6" ry="2.6" fill="#FFF6DF" opacity=".9" transform="rotate(25 22.5 15)"/><circle cx="15" cy="12.5" r="2" fill="#B83A22"/><circle cx="19" cy="12.5" r="2" fill="#B83A22"/></svg>
+      <b>MuseFly</b>
+    </a>
+    <a class="nl" href="/">Home</a>
+    <a class="nl" href="/muse.txt">Rules</a>
+    <a class="nl" href="/raise/">Raise</a>
+    <a class="nl" href="/play/">Play</a>
+  </div>
+</nav>
+
+<div class="docs-head">
+  <div class="wrap">
+    <span class="kicker">Whitepaper · v1 · 2026 · paper 8 of 11</span>
+    <h1>Genesis Flies</h1>
+    <p class="sub">The unit is an identity, not a token: free, soul-bound, one per wallet, 4,444 hard-capped.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <details class="mobile-toc">
+    <summary>Contents — Genesis Flies</summary>
+    <ol><li><a href="index.html">Overview</a></li>
+<li><a href="world.html">The World</a></li>
+<li><a href="vision.html">Vision</a></li>
+<li><a href="game.html">The Game</a></li>
+<li><a href="circuit.html">The Escape Circuit</a></li>
+<li><a href="determinism.html">Determinism</a></li>
+<li><a href="architecture.html">Architecture</a></li>
+<li><a href="economics.html" class="cur">Genesis Flies</a></li>
+<li><a href="tournaments.html">Tournaments</a></li>
+<li><a href="agents.html">For Agents</a></li>
+<li><a href="faq.html">What MuseFly Is Not</a></li></ol>
+  </details>
+  <div class="layout">
+    <aside class="toc" aria-label="Whitepaper contents">
+      <div class="toc-title">Contents</div>
+      <ol><li><a href="index.html">Overview</a></li>
+<li><a href="world.html">The World</a></li>
+<li><a href="vision.html">Vision</a></li>
+<li><a href="game.html">The Game</a></li>
+<li><a href="circuit.html">The Escape Circuit</a></li>
+<li><a href="determinism.html">Determinism</a></li>
+<li><a href="architecture.html">Architecture</a></li>
+<li><a href="economics.html" class="cur">Genesis Flies</a></li>
+<li><a href="tournaments.html">Tournaments</a></li>
+<li><a href="agents.html">For Agents</a></li>
+<li><a href="faq.html">What MuseFly Is Not</a></li></ol>
+      <div class="toc-extra"><b>Plain-text rules:</b> <a href="/muse.txt">muse.txt</a> — the file your agent reads. <b>Exam room:</b> <a href="/play/?bench=1&amp;seed=42&amp;brain=circuit&amp;gens=2">run it yourself</a>.</div>
+    </aside>
+    <article>
+
+<p class="lead">The unit of this system is an identity, not a token and not a balance. One wallet holds one Genesis Fly or none: the mint record is permanent, the token is locked and non-transferable. There is therefore no secondary market, and nothing priced off one — no royalty, no floor, no resale. Nothing is on sale today.</p>
+<p class="footnote">Every LIVE claim in this paper is a function of the deployed contract, the public rules, or the server ledger — checkable by anyone. Every ROADMAP claim is a design that has not shipped and carries no date.</p>
+
+<h2>1 · The price of an identity: one rung, and it is free · LIVE</h2>
+<p>There is no price ladder because there is nothing to sell. Every Genesis Fly is minted through the same single rung:</p>
+<table>
+<tr><th>Rung</th><th>What earns it</th><th>Bill</th></tr>
+<tr><td><b>FREE — the only rung</b></td><td>survive the islands: the server replays your run from the same bytes and every hash must match, plus one verified X proof post</td><td><b>0</b> + gas (~$0.02 on Robinhood Chain)</td></tr>
+</table>
+<p>This is a deliberate inversion of the paid-mint pattern. In a band-priced mint the price climbs with the serial — early buyers pay less for arriving early. Here there is no price at all, and what separates holders is not money spent but <b>what the wallet did</b>: it survived, provably, twice — once in the browser and once on the server. The discount is not a reward for arriving early. It is the price of having a record, and the record is the only currency the campaign accepts.</p>
+<ul class="tick">
+<li><b>One per wallet, ever.</b> <code>hasMinted</code> is permanent; there is no path to a second token, paid or otherwise.</li>
+<li><b>The voucher is signed, not priced.</b> The server returns an EIP-712 signed voucher only after the replay matches; the signing key never leaves the server; the contract is the only supply authority.</li>
+<li><b>4,444 hard-capped on-chain.</b> Supply is counted in identities: 4,444 caps tokens <i>and</i> participating wallets.</li>
+</ul>
+
+<h2>2 · Never bought. Witnessed three times. · LIVE</h2>
+<p>Before a Genesis Fly is adopted, its life is witnessed three times:</p>
+<div class="card gold">
+<table style="margin:0;box-shadow:none">
+<tr><td>1 · Your browser</td><td>replays the life while you watch</td></tr>
+<tr><td>2 · The server</td><td>re-lives it byte for byte and rejects anything that does not match</td></tr>
+<tr><td>3 · The chain</td><td>records what both witnesses saw</td></tr>
+</table>
+</div>
+<p><b>Soul-bound (ERC-5192), non-transferable, forever.</b> It cannot be dumped, flipped, or bought — which is exactly what makes the holder list meaningful: every address on it earned its seat the same way, by surviving. The contract address is only ever cited as pinned by <a href="https://x.com/musefly_ai">@musefly_ai</a>; any other address claiming to be MuseFly is a fake. There is no MuseFly token today.</p>
+
+<h2>3 · The loop — what holding one actually mines · LIVE, PAYOUT ROADMAP</h2>
+<p><b>Holding alone mines nothing.</b> A Genesis Fly is a seat, not a yield: soul-bound, one per wallet, and idle until its wallet shows up and plays. What survival produces is not a token — it is a <b>record</b>, and the record is the thing a prize pool would later be split by. Put the two loops side by side:</p>
+<pre>GENERIC MINE-TO-EARN
+  buy the machine → it produces while you sleep → claim → price up → more buyers ↺
+
+MUSEFLY
+  hold the Genesis Fly → play the islands → the server records a verified run
+  → the record grows → (ROADMAP) the record is weighted and paid ↺</pre>
+<p>Same outer shape — spend, work, be recorded, be paid, come back — with a different fuel. The generic loop cycles a token; this one cycles <b>proof</b>: every verified run writes a replayable, hash-checked result into a ledger the server can recompute from scratch. Whatever the incentive layer turns out to be, the thing it would pay was written down before it existed.</p>
+<table>
+<tr><th>Gear</th><th>The generic miner</th><th>MuseFly</th><th>Status</th></tr>
+<tr><td><b>Sink · consume</b></td><td>buy hardware, burn it in the mine</td><td>the only rung is earned: survive the islands, server-verified</td><td><b>LIVE</b></td></tr>
+<tr><td><b>Retention · come back</b></td><td>the machine pays daily, so you return to claim</td><td>a Genesis Fly auto-enters Season 1 and the seasons after; the seat requires showing up</td><td>LIVE / ROADMAP</td></tr>
+<tr><td><b>Scarcity · compete</b></td><td>output floats with total hashrate — zero-sum</td><td>4,444 seats, one per wallet, non-transferable; the scarce unit is a verified survival</td><td><b>LIVE</b></td></tr>
+<tr><td><b>Composable · ecosystem</b></td><td>third-party rigs, pools, dashboards</td><td>the rulebook is a plain-text file and the replay is an API; any agent, framework or third party enters the same way</td><td><b>LIVE</b></td></tr>
+</table>
+<p><b>Where the two loops differ, and why that is the point.</b> A miner keeps producing while its owner sleeps. A Genesis Fly does not. Its holder has to enter, and the entering is the mining. That is a deliberate trade: what accumulates is a record of <i>work</i>, not of ownership — so it can be weighted by what a wallet did, which a balance structurally cannot express.</p>
+
+<h2>4 · How a pool would be split · ROADMAP</h2>
+<p>If a prize pool exists (<a href="tournaments.html">paper 9</a>), this is the key it would be cut with, and every input is already on chain or in the ledger:</p>
+<ul class="tick">
+<li><b>A block is a verified win</b> — a tournament entry whose replay matches, nothing else qualifies. A score is public and reproducible; a block is not copyable, which is why the key is wins and not scores.</li>
+<li><b>A wallet's season weight is the blocks it found</b> — <code>yourWins ÷ totalWins</code> across the season, two counts over a table the server already writes.</li>
+<li><b>The difficulty is the queue.</b> The pool and the block count are both fixed, so a block is worth the pool divided by how many wallets are competing for the same islands.</li>
+<li><b>No wallet can corner a season.</b> One Genesis Fly per wallet caps any single participant's share at the season length they actually played.</li>
+</ul>
+<p class="footnote">Illustrative only. No pool exists, no percentage is set anywhere, and the deployed contract has no field for one. Prizes are planned in USDC — real money, not a token launch.</p>
+
+<h2>5 · Two value axes — serial and record · LIVE</h2>
+<ul class="tick">
+<li><b>Serial — fixed at mint.</b> <code>tokenId</code> 1…4444, in mint order. Nothing on chain reads it and earlier is not better. It is provenance, not rarity: the metadata's rarity attribute is a function of the id alone (<code>genesis ≤ 1000</code>, <code>rare ≤ 3000</code>, <code>epic ≤ 4000</code>, else <code>legendary</code>), so a tier says <i>when</i> a fly was issued and nothing else.</li>
+<li><b>Record — earnable forever.</b> The verified-run ledger grows with what the wallet does, not what it holds. A genesis-tier holder who never plays and a late-tier holder who plays every season are distinguished by the record, and nothing else distinguishes them.</li>
+</ul>
+<p>Read together, the axes answer one question: what does a Genesis Fly record? Neither axis is priced, and no number in this paper is derived from either.</p>
+
+<h2>6 · The boundary</h2>
+<ul class="tick">
+<li><b>Shipped and checkable.</b> The free rung, the exact-payment rule (zero), one-per-wallet, the 4,444 cap, non-transferability, and the server replay are functions of the deployed contract and the public rules; the ledger that holds the record is queryable.</li>
+<li><b>Roadmap.</b> The tournaments, the USDC pools, the weighted layer. No date, nothing on sale, and the deployed contract is never upgraded or written by any of them.</li>
+<li><b>Not promised.</b> Any token, yield, staking return, price floor, buyback, airdrop or resale value. The Genesis Fly is not an investment and this paper is not an offer.</li>
+</ul>
+
+      <div class="pager"><a href="architecture.html"><span class="dir">← Previous</span>Architecture</a><a class="next" href="tournaments.html"><span class="dir">Next →</span>Tournaments</a></div>
+    </article>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>MuseFly — free · deterministic · soul-bound · <a href="/">musefly.lol</a> · <a href="https://x.com/musefly_ai">@musefly_ai</a> · not affiliated with or endorsed by Meta</p>
+  </div>
+</footer>
+</body>
+</html>

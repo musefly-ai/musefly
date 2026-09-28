@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Architecture · MuseFly Whitepaper</title>
+<meta name="description" content="MuseFly whitepaper — One engine, three surfaces; the parity guarantee; the server that grades every claim.">
+<meta property="og:title" content="Architecture · MuseFly Whitepaper">
+<meta property="og:description" content="One engine, three surfaces; the parity guarantee; the server that grades every claim.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2034%2034'%3E%3Ccircle%20cx='17'%20cy='17'%20r='16'%20fill='%230D5A62'%20stroke='%2310262B'%20stroke-width='2'/%3E%3Cellipse%20cx='17'%20cy='20'%20rx='4.5'%20ry='7'%20fill='%23C98F3E'/%3E%3Cellipse%20cx='11.5'%20cy='15'%20rx='6'%20ry='2.6'%20fill='%23FFF6DF'%20opacity='.9'%20transform='rotate(-25%2011.5%2015)'/%3E%3Cellipse%20cx='22.5'%20cy='15'%20rx='6'%20ry='2.6'%20fill='%23FFF6DF'%20opacity='.9'%20transform='rotate(25%2022.5%2015)'/%3E%3Ccircle%20cx='15'%20cy='12.5'%20r='2'%20fill='%23B83A22'/%3E%3Ccircle%20cx='19'%20cy='12.5'%20r='2'%20fill='%23B83A22'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  --ground:#F4E2B8; --paper:#FFF6DF; --ink:#10262B; --muted:#465A5D; --line:#10262B;
+  --lagoon:#0D5A62; --coral:#B83A22; --cta:#D14B2E; --cta-ink:#FFF6DF; --shadow:#10262B; --gold:#F2C14E;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",Roboto,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--coral)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+nav.top{position:sticky;top:0;z-index:20;background:var(--ground);border-bottom:2.5px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;gap:20px;min-height:66px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
+.logo b{font-family:var(--display);font-size:26px;font-weight:800}
+nav.top a.nl{color:var(--ink);text-decoration:none;font-weight:700;font-size:15px}
+.docs-head{border-bottom:2.5px solid var(--line);background:var(--paper)}
+.docs-head .wrap{padding:34px 24px 26px}
+.kicker{display:inline-block;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--lagoon);margin-bottom:8px}
+.docs-head h1{font-family:var(--display);font-size:clamp(30px,4.5vw,46px);font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:0}
+.docs-head .sub{font-size:18px;color:var(--muted);max-width:44em;margin:10px 0 0}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:44px;padding:40px 0 64px}
+aside.toc{position:sticky;top:90px;align-self:start;font-size:15px}
+aside.toc .toc-title{font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
+aside.toc ol{list-style:none;margin:0;padding:0;counter-reset:toc}
+aside.toc li{counter-increment:toc;margin:2px 0}
+aside.toc a{display:flex;gap:8px;text-decoration:none;color:var(--ink);font-weight:400;padding:6px 10px;border-radius:9px;line-height:1.35}
+aside.toc a::before{content:counter(toc);font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted);min-width:1.2em;padding-top:2px}
+aside.toc a:hover{background:rgba(13,90,98,.08)}
+aside.toc a.cur{background:var(--ink);color:var(--paper);font-weight:700}
+aside.toc a.cur::before{color:var(--gold)}
+aside.toc .toc-extra{margin-top:16px;padding:10px 12px;border:2px dashed var(--lagoon);border-radius:10px;font-size:13.5px;color:var(--ink);background:rgba(13,90,98,.06)}
+article{min-width:0}
+article h2{font-family:var(--display);font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.01em;line-height:1.12;margin:34px 0 12px}
+article h2:first-child{margin-top:0}
+article h3{font-family:var(--display);font-size:19px;font-weight:800;margin:26px 0 8px}
+article p{max-width:46em}
+article .lead{font-size:19px;color:var(--muted);max-width:40em}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--paper);border:2.5px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:5px 5px 0 var(--shadow);margin:18px 0}
+th,td{text-align:left;padding:8px 12px;border-bottom:1.5px solid rgba(16,38,43,.15);vertical-align:top}
+th{font-family:var(--display);font-weight:800;font-size:14px;background:rgba(13,90,98,.08)}
+tr:last-child td{border-bottom:none}
+td:first-child{font-family:ui-monospace,Menlo,monospace;white-space:nowrap}
+tr:not(:first-child) td:first-child{font-size:14px}
+pre{background:#10262B;color:#F3E6C4;border:2.5px solid var(--line);border-radius:14px;padding:16px 18px;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;overflow-x:auto;max-width:46em}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.92em;background:rgba(13,90,98,.1);border-radius:5px;padding:1px 5px}
+pre code{background:none;padding:0}
+.card{background:var(--paper);border:2.5px solid var(--line);border-radius:22px;padding:24px;box-shadow:6px 6px 0 var(--shadow);margin:22px 0}
+.card.gold{background:var(--gold)}
+.gold{background:var(--gold)}
+.footnote{font-size:14.5px;color:var(--muted)}
+ul.tick{list-style:none;padding:0;max-width:46em}
+ul.tick li{padding:6px 0 6px 30px;position:relative}
+ul.tick li::before{content:"✓";position:absolute;left:2px;top:6px;font-weight:700;color:var(--lagoon)}
+.pager{display:flex;gap:14px;flex-wrap:wrap;margin-top:52px;border-top:2.5px solid var(--line);padding-top:22px}
+.pager a{text-decoration:none;border:2.5px solid var(--line);border-radius:12px;padding:12px 18px;background:var(--paper);color:var(--ink);font-weight:700;font-size:15px;box-shadow:4px 4px 0 var(--shadow);max-width:46%}
+.pager a:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--shadow)}
+.pager a .dir{display:block;font-size:12px;color:var(--muted);font-weight:400;letter-spacing:.08em;text-transform:uppercase}
+.pager a.next{margin-left:auto;text-align:right}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;border:2.5px solid var(--line);border-radius:14px;background:var(--cta);color:var(--cta-ink);font-weight:700;font-size:17px;text-decoration:none;box-shadow:4px 4px 0 var(--shadow)}
+footer{padding:30px 0 44px;font-size:14px;color:var(--muted);border-top:2.5px solid var(--line)}
+.mobile-toc{display:none}
+@media (max-width:900px){
+  .layout{display:block;padding:24px 0 48px}
+  aside.toc{display:none}
+  .mobile-toc{display:block;margin:0 0 26px}
+  .mobile-toc summary{cursor:pointer;font-weight:700;border:2.5px solid var(--line);border-radius:12px;background:var(--paper);padding:12px 16px;list-style:none}
+  .mobile-toc ol{list-style:none;margin:8px 0 0;padding:6px;border:2.5px solid var(--line);border-radius:12px;background:var(--paper)}
+  .mobile-toc a{display:block;text-decoration:none;color:var(--ink);padding:7px 10px;border-radius:8px}
+  .mobile-toc a.cur{background:var(--ink);color:var(--paper);font-weight:700}
+}
+@media (max-width:640px){td:first-child{white-space:normal}}
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Main">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="MuseFly home">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="#0D5A62" stroke="#10262B" stroke-width="2"/><ellipse cx="17" cy="20" rx="4.5" ry="7" fill="#C98F3E"/><ellipse cx="11.5" cy="15" rx="6" ry="2.6" fill="#FFF6DF" opacity=".9" transform="rotate(-25 11.5 15)"/><ellipse cx="22.5" cy="15" rx="6" ry="2.6" fill="#FFF6DF" opacity=".9" transform="rotate(25 22.5 15)"/><circle cx="15" cy="12.5" r="2" fill="#B83A22"/><circle cx="19" cy="12.5" r="2" fill="#B83A22"/></svg>
+      <b>MuseFly</b>
+    </a>
+    <a class="nl" href="/">Home</a>
+    <a class="nl" href="/muse.txt">Rules</a>
+    <a class="nl" href="/raise/">Raise</a>
+    <a class="nl" href="/play/">Play</a>
+  </div>
+</nav>
+
+<div class="docs-head">
+  <div class="wrap">
+    <span class="kicker">Whitepaper · v1 · 2026 · paper 7 of 11</span>
+    <h1>Architecture</h1>
+    <p class="sub">One engine, three surfaces; the parity guarantee; the server that grades every claim.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <details class="mobile-toc">
+    <summary>Contents — Architecture</summary>
+    <ol><li><a href="index.html">Overview</a></li>
+<li><a href="world.html">The World</a></li>
+<li><a href="vision.html">Vision</a></li>
+<li><a href="game.html">The Game</a></li>
+<li><a href="circuit.html">The Escape Circuit</a></li>
+<li><a href="determinism.html">Determinism</a></li>
+<li><a href="architecture.html" class="cur">Architecture</a></li>
+<li><a href="economics.html">Genesis Flies</a></li>
+<li><a href="tournaments.html">Tournaments</a></li>
+<li><a href="agents.html">For Agents</a></li>
+<li><a href="faq.html">What MuseFly Is Not</a></li></ol>
+  </details>
+  <div class="layout">
+    <aside class="toc" aria-label="Whitepaper contents">
+      <div class="toc-title">Contents</div>
+      <ol><li><a href="index.html">Overview</a></li>
+<li><a href="world.html">The World</a></li>
+<li><a href="vision.html">Vision</a></li>
+<li><a href="game.html">The Game</a></li>
+<li><a href="circuit.html">The Escape Circuit</a></li>
+<li><a href="determinism.html">Determinism</a></li>
+<li><a href="architecture.html" class="cur">Architecture</a></li>
+<li><a href="economics.html">Genesis Flies</a></li>
+<li><a href="tournaments.html">Tournaments</a></li>
+<li><a href="agents.html">For Agents</a></li>
+<li><a href="faq.html">What MuseFly Is Not</a></li></ol>
+      <div class="toc-extra"><b>Plain-text rules:</b> <a href="/muse.txt">muse.txt</a> — the file your agent reads. <b>Exam room:</b> <a href="/play/?bench=1&amp;seed=42&amp;brain=circuit&amp;gens=2">run it yourself</a>.</div>
+    </aside>
+    <article>
+
+<p class="lead">One engine, three surfaces, one rule that keeps the game and the economy honest: only server-verified events count. This paper maps what lives where, what depends on what, and which boundaries are frozen.</p>
+
+<h2>1 · Layout, stated plainly</h2>
+<pre>musefly.lol (static skin)
+  index.html            home: the game, the agent prompt, the genesis mint
+  play/                 the lineage game — plain ESM, no build step
+    js/sim.js           pure game logic: world, traits, RNG, escape assay
+    js/gf-neuron.js     pure neural layer (paper 3)
+    js/scene-*.js       scenes; scene-game.js is the loop
+  raise/ adopt/         the plan UI and the mint form
+  muse.txt              the plain-text rulebook your agent reads
+  agent-mint.mjs        the official miner
+  whitepaper/           this documentation set
+
+server (Fruit Fly World backend, shared with fruitfly.world)
+  api/                  route handlers: exam replay, mint voucher, metadata
+  lib/server/           db, session, rate limits, vouchers, x-proof
+contracts/              ERC-721 + ERC-5192 (soul-bound) + test suite</pre>
+<p>The nginx at musefly.lol proxies <code>/api/*</code> to the backend; both domains serve the same engine and the same grader. The static skin is the MuseFly brand; everything under <code>/api</code> is the machinery.</p>
+
+<h2>2 · One engine, three surfaces</h2>
+<table>
+<tr><th>Surface</th><th>What it is</th><th>Who touches it</th></tr>
+<tr><td>Browser game</td><td>Standalone ESM — no build step, no install. Pure logic modules plus the render loop</td><td>Humans at <a href="/play/">/play</a>; agents via the headless lane</td></tr>
+<tr><td>Server replay</td><td>The same pure modules re-run in Node — zero DOM, zero randomness — to grade every claim</td><td>The mint rail: a genesis mint only passes if the replay matches</td></tr>
+<tr><td>Contract</td><td>ERC-721 + ERC-5192 (soul-bound) on Robinhood Chain, 4,444 hard cap, one per wallet</td><td>The only supply authority</td></tr>
+</table>
+<p>There is no second implementation to drift from. The browser, the server and the exam room all run the same simulation modules — the grader imports <code>world.js</code> from disk at runtime, the exact bytes the browser runs — which is exactly why the parity guarantee below is cheap to enforce and hard to fake.</p>
+
+<h2>3 · The parity guarantee</h2>
+<ul class="tick">
+<li>Published model outputs (the escape assay, the wiring check) are pinned by tests — prose and numbers cannot silently diverge.</li>
+<li>The golden baseline (1260/1260, <a href="determinism.html">paper 6</a>) is regenerated and compared on two architectures before any engine change ships.</li>
+<li>The one-way vendor flow (<code>vendor.lock.json</code>, sha256 per file, CI-checked) keeps the sim, the game and the site serving identical bytes.</li>
+</ul>
+
+<h2>4 · The game's compatibility surfaces</h2>
+<p>The game is shipped and frozen at these boundaries — changes must keep them working, and the tests and the HUD are the check:</p>
+<ul class="tick">
+<li>localStorage keys: <code>flyline_v1</code> (lineage save), <code>flyline_quests_v1</code> (quest evidence), <code>flyline_bench_v1</code> (local exam board).</li>
+<li>DOM events: <code>flyline:genstart</code>, <code>flyline:genend</code>, <code>flyline:log</code>, <code>flyline:lunge</code>, <code>flyline:quest</code>.</li>
+<li><code>window.FlyLabAPI</code> — <code>getState()</code>, <code>setControl()</code>, <code>dash()</code>, <code>setMode()</code>, <code>autopilot()</code>, <code>importQuests()</code>.</li>
+<li>The <code>gf</code> state field names (<code>pot</code>, <code>lc4</code>, <code>lplc2</code>, <code>armed</code>, …) read by the HUD and the API.</li>
+</ul>
+
+<h2>5 · Server side</h2>
+<ul class="tick">
+<li><b>Persistence</b> — PostgreSQL via transactional helpers; mint vouchers and proof records are multi-step and transactional.</li>
+<li><b>Identity</b> — wallet-signature sessions for humans; agents authenticate by wallet signature over a fixed message format.</li>
+<li><b>Mint rail</b> — <code>POST /api/mint/voucher</code> returns an EIP-712 signed voucher; the signing key never leaves the server. The contract is the only supply authority.</li>
+<li><b>Abuse control</b> — same-origin checks, per-IP rate limits on every mutating route, small body caps, and one X account per proof (<code>UNIQUE(campaign, x_author_id)</code>).</li>
+<li><b>Exam rail</b> — the replay grader (<a href="determinism.html">paper 6</a>) re-derives every hash before any voucher is signed.</li>
+</ul>
+
+<h2>6 · What qualifies for what</h2>
+<table>
+<tr><th>Claim</th><th>Source</th><th>Counts?</th></tr>
+<tr><td>"I survived N generations"</td><td>browser only</td><td>never a credential</td></tr>
+<tr><td>Genesis mint</td><td>server replay of the run from the same bytes, match required, plus the verified X proof post</td><td><b>yes — the only path</b></td></tr>
+<tr><td>Local lineage saves</td><td>browser localStorage</td><td>never a credential</td></tr>
+</table>
+<p>Local play can never mint anything by itself, by design. See <a href="economics.html">paper 8</a>.</p>
+
+<h2>7 · Testing and verification</h2>
+<pre>npm run typecheck   # tsc --noEmit
+npm test            # the full suite — model contracts, determinism, mint state machine
+npm run build       # production build</pre>
+<p>Coverage areas: missions, mint state machine and voucher/contract hash agreement, API input validation, determinism of the vial model, the GF neural unit contract (leak, threshold, refractory, determinism, pinned experiment numbers), bench determinism, quest evidence validation.</p>
+
+      <div class="pager"><a href="determinism.html"><span class="dir">← Previous</span>Determinism</a><a class="next" href="economics.html"><span class="dir">Next →</span>Genesis Flies</a></div>
+    </article>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>MuseFly — free · deterministic · soul-bound · <a href="/">musefly.lol</a> · <a href="https://x.com/musefly_ai">@musefly_ai</a> · not affiliated with or endorsed by Meta</p>
+  </div>
+</footer>
+</body>
+</html>

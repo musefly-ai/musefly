@@ -600,9 +600,16 @@ export class GameScene extends Phaser.Scene {
           if(fly.isPlayer){ this.floater(fly,`Odor exposed for ${ODOR_TIME}s`,CSS.lavender); sfx.odor(); }
         }
         if(fly.isPlayer){
-          const p=this.toPx(item.x,item.y);
-          (item.type==="sugar"?this.emFood:item.type==="yeast"?this.emGold:this.emLav).explode(item.type==="sugar"?8:14,p.x,p.y);
-          sfx.eat(item.type);
+          // fx throttle only (sim numbers above already applied): a fly parked
+          // on food — sitter respawns it in place — eats every frame, which
+          // spammed particles+sound into the smear players reported.
+          const nowFx=this.time.now;
+          if(!this._eatFxAt||nowFx-this._eatFxAt>150){
+            this._eatFxAt=nowFx;
+            const p=this.toPx(item.x,item.y);
+            (item.type==="sugar"?this.emFood:item.type==="yeast"?this.emGold:this.emLav).explode(item.type==="sugar"?8:14,p.x,p.y);
+            sfx.eat(item.type);
+          }
           if(item.type!=="sugar") this.floater(fly,"+"+Math.round(ft.gain*fly.stats.foodMult),item.type==="yeast"?CSS.gold:CSS.lavender);
         }
         this.relocateFood(item,fly);
@@ -784,7 +791,7 @@ export class GameScene extends Phaser.Scene {
       const hit=(quest)=>{
         if(store[quest]) return;
         store[quest]={quest,...base};
-        this.uiLog(tr(`🏅 DISH quest complete: ${quest} — claim your free mint on the Passport page.`,`🏅 任务完成:${quest} —— 到首页护照区领取免费铸造。`));
+        this.uiLog(tr(`🏅 DISH quest complete: ${quest} — free Genesis Fly mint unlocked, at musefly.lol (Free mint section).`,`🏅 任务完成:${quest} —— 创世纪免费铸造已解锁，回 musefly.lol 首页铸造。`));
         document.dispatchEvent(new CustomEvent("flyline:quest",{detail:{quest}}));
       };
       if(detail.alive) hit("SURVIVOR");
@@ -807,7 +814,7 @@ export class GameScene extends Phaser.Scene {
       const e=store[k];
       if(!e||typeof e!=="object"||e.quest!==k||cur[k]) continue;
       cur[k]=e; n++;
-      this.uiLog(tr(`🏅 DISH quest complete: ${k} — claim your free mint on the Passport page.`,`🏅 任务完成:${k} —— 到首页护照区领取免费铸造。`));
+      this.uiLog(tr(`🏅 DISH quest complete: ${k} — free Genesis Fly mint unlocked, at musefly.lol (Free mint section).`,`🏅 任务完成:${k} —— 创世纪免费铸造已解锁，回 musefly.lol 首页铸造。`));
       document.dispatchEvent(new CustomEvent("flyline:quest",{detail:{quest:k}}));
     }
     if(n>0){ try{ localStorage.setItem("flyline_quests_v1",JSON.stringify(cur)); }catch(err){} }
@@ -1057,6 +1064,14 @@ export class GameScene extends Phaser.Scene {
   }
 
   floater(fly,text,color){
+    // presentation-only dedupe: standing on food (esp. with sitter, which
+    // respawns it in place) re-triggers the eat text EVERY frame — throttle
+    // identical texts so hints don't stack into an unreadable smear. No sim
+    // values are touched.
+    const now=this.time.now;
+    this._floaterAt=this._floaterAt||{};
+    if(this._floaterAt[text]&&now-this._floaterAt[text]<700) return;
+    this._floaterAt[text]=now;
     const p=this.toPx(fly.x,fly.y);
     const t=this.add.text(p.x,p.y-26,text,{fontFamily:"Menlo,monospace",fontSize:"13px",color,fontStyle:"bold"}).setOrigin(0.5).setDepth(20);
     this.tweens.add({targets:t,y:p.y-56,alpha:0,duration:850,ease:"Quad.out",onComplete:()=>t.destroy()});

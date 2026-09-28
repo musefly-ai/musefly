@@ -22,8 +22,10 @@ function applyLanguage(){
   $("languageSelect").value=language; $("languageControl").querySelector("label").textContent=l.label;
   $("mReset").textContent=l.reset; $("hPause").title=l.pause;
   document.querySelector("#menu .subtitle").textContent=l.subtitle;
-  const p=document.querySelectorAll("#menu .howto");
-  p[0].textContent=l.intro; p[1].textContent=l.phone; p[2].textContent=l.food;
+  // NOTE: the menu guide (#menu .howto blocks, incl. the "free NFT?" guideBox)
+  // is canonical in play/index.html — do NOT overwrite it positionally here.
+  // The old p[0..2] textContent writes silently replaced the 4-step guide and
+  // the guideBox with stale intro/phone/food strings.
   document.querySelector(".circCard h3").textContent=l.circuit;
   document.querySelector('[data-conn="real"]').textContent=l.real;
   document.querySelector('[data-conn="shuffled"]').textContent=l.shuffled;
@@ -88,22 +90,78 @@ export function initUI(scene){
   wireTouch();
   document.addEventListener("flyline:log",e=>addLog(e.detail));
   // quest completion gets a real banner, not just a log line: the freemint is
-  // the player's receipt, and it must be impossible to play past it
-  document.addEventListener("flyline:quest",e=>{
+  // the player's receipt, and it must be impossible to play past it.
+  // BUT the mint form needs a plan on record: genend(alive) fires BEFORE the
+  // draft pick saves flyline_v1.traits, so a link clicked too early lands on
+  // an empty form (the exact confusion we're killing). No plan ⇒ banner shows
+  // guidance instead of a link; the real MINT FREE banner fires on the next
+  // genstart once the picked trait is saved.
+  const planOnRecord=()=>{
+    try{
+      if((JSON.parse(localStorage.getItem("musefly_plan_v1")||"[]")||[]).length) return true;
+      if(((JSON.parse(localStorage.getItem("flyline_v1")||"{}")||{}).traits||[]).length) return true;
+    }catch(_){}
+    return false;
+  };
+  let questPendingName=null;
+  const showQuestBanner=(q,withLink)=>{
     const old=document.getElementById("questToast"); if(old) old.remove();
-    const q=e.detail.quest;
     const el=document.createElement("div");
     el.id="questToast";
     const title=language==="en"?"DISH QUEST COMPLETE":"任务完成";
     const body=language==="en"
-      ?`<b>${q}</b> recorded — this unlocks the free Passport mint.`
-      :`已记录 <b>${q}</b> —— 解锁免费护照铸造。`;
-    el.innerHTML=`<div class="qTitle">🏅 ${title}</div><div class="qBody">${body}</div>`+
-      `<a class="qLink" href="/#mint">${language==="en"?"CLAIM FREE MINT →":"去领免费铸造 →"}</a>`;
+      ?`<b>${q}</b> recorded — your free Genesis Fly mint is unlocked.`
+      :`已记录 <b>${q}</b> —— 创世纪免费铸造已解锁。`;
+    const note=language==="en"
+      ?` Pick your mutation in the draft first — the mint page auto-fills it.`
+      :` 请先在抽卡里选好变异，铸造页会自动带上它。`;
+    el.innerHTML=`<div class="qTitle">🏅 ${title}</div><div class="qBody">${body}${withLink?"":note}</div>`+
+      (withLink?`<a class="qLink" href="/#genesis">${language==="en"?"MINT FREE →":"去免费铸造 →"}</a>`:"");
     document.body.appendChild(el);
     const kill=()=>el.remove();
     el.addEventListener("click",e=>{ if(e.target.tagName!=="A") kill(); });
-    setTimeout(kill,12000);
+    setTimeout(kill,withLink?12000:9000);
+  };
+  document.addEventListener("flyline:quest",e=>{
+    if(planOnRecord()) showQuestBanner(e.detail.quest,true);
+    else { questPendingName=e.detail.quest; showQuestBanner(e.detail.quest,false); }
+  });
+  document.addEventListener("flyline:genstart",()=>{
+    if(questPendingName&&planOnRecord()){ showQuestBanner(questPendingName,true); questPendingName=null; }
+  });
+  document.addEventListener("flyline:genend",e=>{
+    // eligibility for the gated Genesis mint: this browser saw a fly
+    // survive a full generation (the claim still re-verifies server-side)
+    const d=e.detail;
+    if(d&&d.alive){
+      try{ localStorage.setItem("musefly_played_v1",JSON.stringify({ts:Date.now(),gen:d.gen,seed:(gameScene.state.worldSeed>>>0)})); }catch(_){}
+      // pre-seal the mint claim in the background so /adopt needs no 60s replay:
+      // same world.js, same plan policy, gens=2 — exactly what the voucher route
+      // re-runs. Cached under musefly_claim_v1; failures are silent (fallback
+      // path recomputes at mint time).
+      // Sealed in a module Worker (/seal-worker.js): world.js is DOM-free and
+      // deterministic, so the records are byte-identical — but the page's sim.js
+      // RNG stays private to the live game (the old inline runLineage re-seeded
+      // the SHARED global RNG mid-generation and its microtask loop froze the
+      // page for seconds right after each genend).
+      setTimeout(()=>{
+        const seed=gameScene.state.worldSeed>>>0;
+        let plan=[]; try{ plan=JSON.parse(localStorage.getItem("musefly_plan_v1")||"[]"); }catch(_){}
+        if(!plan.length){ try{ plan=JSON.parse(localStorage.getItem("flyline_v1")||"{}").traits||[]; }catch(_){} }
+        if(!plan.length) return;
+        try{
+          const w=new Worker("/seal-worker.js",{type:"module"});
+          w.onmessage=(ev)=>{
+            w.terminate();
+            if(ev.data&&ev.data.gens){
+              try{ localStorage.setItem("musefly_claim_v1",JSON.stringify({ts:Date.now(),seed,plan,gens:ev.data.gens})); }catch(_){}
+            }
+          };
+          w.onerror=()=>w.terminate();
+          w.postMessage({seed,plan,brain:"circuit",gens:2});
+        }catch(_){}
+      },1500);
+    }
   });
   document.addEventListener("flyline:genend",e=>showDraft(e.detail));
   document.addEventListener("flyline:genstart",e=>onGenStart(e.detail));
@@ -221,9 +279,10 @@ function wireMenu(){
   });
   // seed
   $("seedInput").value=gameScene.state.worldSeed;
+  try{ localStorage.setItem("musefly_last_seed_v1",String(gameScene.state.worldSeed>>>0)); }catch(_){}
   $("seedApply").addEventListener("click",()=>{
     const v=parseInt($("seedInput").value,10);
-    if(!isNaN(v)&&v>0){ gameScene.setSeed(v); addLog(lang().seed+" "+(v>>>0)+" — world reset for this generation."); }
+    if(!isNaN(v)&&v>0){ gameScene.setSeed(v); try{ localStorage.setItem("musefly_last_seed_v1",String(v>>>0)); }catch(_){} addLog(lang().seed+" "+(v>>>0)+" — world reset for this generation."); }
   });
   // experiment
   $("expBtn").addEventListener("click",()=>{
@@ -319,8 +378,8 @@ function showDraft(d){
     const el=document.createElement("div");
     el.className="tiny questLine";
     el.innerHTML=en
-      ?`DISH quests — SURVIVOR ${mark("SURVIVOR")} · FORAGER ${mark("FORAGER")} (${Math.min(d.eggs,3)}/3 eggs) · REFLEX ${mark("REFLEX")} (${Math.min(d.escapes||0,3)}/3 escapes) · EXAMINED ${mark("EXAMINED")} (<a href="?bench=1&seed=42&brain=circuit&gens=2" target="_blank" rel="noreferrer">exam room</a>) — any one unlocks the free mint`
-      :`培养皿任务 —— 生存者 ${mark("SURVIVOR")} · 觅食者 ${mark("FORAGER")}（卵 ${Math.min(d.eggs,3)}/3）· 反射 ${mark("REFLEX")}（逃逸 ${Math.min(d.escapes||0,3)}/3）· 受试 ${mark("EXAMINED")}（<a href="?bench=1&seed=42&brain=circuit&gens=2" target="_blank" rel="noreferrer">考场</a>）—— 任一完成即解锁免费铸造`;
+      ?`DISH quests — SURVIVOR ${mark("SURVIVOR")} · FORAGER ${mark("FORAGER")} (${Math.min(d.eggs,3)}/3 eggs) · REFLEX ${mark("REFLEX")} (${Math.min(d.escapes||0,3)}/3 escapes) · EXAMINED ${mark("EXAMINED")} (<a href="?bench=1&seed=42&brain=circuit&gens=2" target="_blank" rel="noreferrer">exam room</a>) · <a href="/#genesis">Free Genesis mint</a> needs one survived generation`
+      :`培养皿任务 —— 生存者 ${mark("SURVIVOR")} · 觅食者 ${mark("FORAGER")}（卵 ${Math.min(d.eggs,3)}/3）· 反射 ${mark("REFLEX")}（逃逸 ${Math.min(d.escapes||0,3)}/3）· 受试 ${mark("EXAMINED")}（<a href="?bench=1&seed=42&brain=circuit&gens=2" target="_blank" rel="noreferrer">考场</a>）· <a href="/#genesis">创世纪免费铸造</a>需要存活一代`;
     $("dRival").after(el);
   }
   if(d.brain&&d.brain.id!=="manual"&&d.brain.decisions>0){
